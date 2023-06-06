@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+	<html xmlns:th=http://www.thymeleaf.org
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link th:href="@{/css/styles.css}" rel="stylesheet" />
+<link th:href="@{/css/header.css}" rel="stylesheet" />
+<link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<link th:href="@{/css/home.css}" rel="stylesheet" />
+<title>Inicio</title>
+
+</head>
+<body>
+
+	<section layout:fragment="custom-content">
+		<div th:replace="fragments/header :: header"></div>
+	</section>
+	<br><br>
+	
+	
+	<div class="page-hero bg-image overlay-dark" style="background-image: url(https://www.unitecoprofesional.es/blog/wp-content/uploads/2021/10/documentacion-clinica-2.jpg);">
+    <div class="hero-section">
+      <div class="container text-center wow zoomIn" style="visibility: visible; animation-name: zoomIn;">
+        <span class="subhead">Let's make your life happier</span>
+        <h1 class="display-4">Clinica dermatologica</h1>
+        <a href="/cita/usuario/obtener/cita" class="btn btn-primary">Coger cita</a>
+      </div>
+    </div>
+  </div>
+  
+  
+   <div class="alert alert-success" th:if="${success != null}"
+		th:text="${success}"></div>
+	<div class="alert alert-danger" th:if="${error != null}"
+		th:text="${error}"></div>
+	<div class="alert alert-warning" th:if="${warning != null}"
+		th:text="${warning}"></div>
+	<div class="alert alert-info" th:if="${info != null}"
+		th:text="${info}"></div>
+	
+</body>
+</html>

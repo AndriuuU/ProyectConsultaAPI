@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+	<html xmlns:th=http://www.thymeleaf.org
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link th:href="@{/css/styles.css}" rel="stylesheet" />
+<link th:href="@{/css/header.css}" rel="stylesheet" />
+<link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+<link rel="stylesheet" href="css/font-awesome.min.css">
+
+<title>Lista de tratamientos</title>
+</head>
+<body>
+		<section layout:fragment="custom-content">
+		<div th:replace="fragments/header :: header"></div>
+	</section>
+	
+	<div th:if="${message != null}" class="alert alert-success alert-dismissible fade show text-center message"
+  role="alert">
+  [[${message}]]
+  <button type="button" class="close btn-sm" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">×</span>
+  </button>
+</div>
+
+<div th:if="${tratamientos.size() > 0}">
+  <table class="table table-hover table-responsive-xl">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Id</th>
+		<th scope="col">NOMBRE</th>
+		<th scope="col">PRECIO</th>
+		<th scope="col">CADA CUANTO</th>
+		<th scope="col">HASTA CUANDO</th>
+		<th scope="col">SERVICIO</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tbody th:each="tratamiento: ${tratamientos}">
+        <th scope="row">[[${tratamiento.id}]]</th>
+        <td scope="row">[[${tratamiento.nombre}]]</td>
+        <td scope="row">[[${tratamiento.cadacuanto}]]</td>
+        <td scope="row">[[${tratamiento.hastacuando}]]</td>
+        <td scope="row">[[${tratamiento.servicio}]]</td>
+        
+        <td>
+          <a th:href="@{'/modtratamiento/' + ${tratamiento.id}}" title="Edit this tutorial"
+            class="fa-regular fa-pen-to-square icon-dark"></a>
+           
+          <a th:href="@{'/tratamiento/delete/' + ${tratamiento.id}}" th:tratamientotratamientoname="${tratamiento.tratamientoname}" id="btnDelete"
+            title="Delete this tratamiento" class="fa-regular fa-trash-can icon-dark btn-delete"></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

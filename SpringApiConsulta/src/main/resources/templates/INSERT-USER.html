@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+	<html xmlns:th=http://www.thymeleaf.org
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link th:href="@{/css/styles.css}" rel="stylesheet" />
+<link th:href="@{/css/header.css}" rel="stylesheet" />
+<link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<link th:href="@{/css/home.css}" rel="stylesheet" />
+
+<title>Isert User</title>
+</head>
+<body>
+	<section layout:fragment="custom-content">
+		<div th:replace="~{fragments/header :: header}"></div>
+	</section>
+	<br>
+	<form th:action="@{/cliente/admin/listUsers}" th:object="${user}" method="post" enctype="multipart/form-data" style="text-align:center;width: 500px;margin: auto;">
+		
+		<h1>Nuevo User</h1>
+		
+		<div class="form-group">
+			<label for="username">Username</label> 
+		<input type="text" class="login__input" placeholder="User name / Email" autocomplete="nope" id="username" name="username" required>
+		</div>
+
+		<div class="form-group">
+			<label for="password">Pasword</label> 
+			<input type="password" class="login__input" name="password" id="password" placeholder="Password" autocomplete="nope">
+		</div>
+		
+		<div class="form-group" >
+			<label for="role">Rol</label>
+				<select name="role" id="role">
+				  <option value="role_user">role_user</option>
+				  <option value="role_admin">role_admin</option>
+				</select>
+		</div>
+
+		<br><br>
+		<input type="submit" class="btn btn-primary">
+		<a th:href="@{/cliente/admin/listUsers/}">
+		<button type="button" class="btn btn-primary">Regresar</button>
+		</a>
+
+		<div class="alert alert-success" th:if="${success != null}"
+			th:text="${success}"></div>
+		<div class="alert alert-danger" th:if="${error != null}"
+			th:text="${error}"></div>
+		<div class="alert alert-warning" th:if="${warning != null}"
+			th:text="${warning}"></div>
+		<div class="alert alert-info" th:if="${info != null}"
+			th:text="${info}"></div>
+
+	</form>
+	
+	<br><br>
+	 <div class="alert alert-success" th:if="${success != null}"
+		th:text="${success}"></div>
+	<div class="alert alert-danger" th:if="${error != null}"
+		th:text="${error}"></div>
+	<div class="alert alert-warning" th:if="${warning != null}"
+		th:text="${warning}"></div>
+	<div class="alert alert-info" th:if="${info != null}"
+		th:text="${info}"></div>
+</body>
+</html>
