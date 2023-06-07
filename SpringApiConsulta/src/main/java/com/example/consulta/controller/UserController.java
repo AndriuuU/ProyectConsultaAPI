@@ -43,8 +43,6 @@ import com.example.consulta.service.TratamientoService;
 import com.example.consulta.serviceImpl.UserService;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -82,11 +80,12 @@ public class UserController {
 	@PostMapping("/login")
 	public com.example.consulta.entity.User login(@RequestParam("username") String username,
 			@RequestParam("password") String password) {
+
 		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		com.example.consulta.entity.User usuario = userService.findUsuario(username);
-		String token = getJWTTokenCiente(username);
+		String token = getJWTTokenCliente(username);
 		usuario.setUsername(username);
 		usuario.setPassword(password);
 		usuario.setToken(token);
@@ -99,6 +98,8 @@ public class UserController {
 		if (exist) {
 			return ResponseEntity.internalServerError().body("EL USUARIO YA EXISTE");
 		} else {
+			String token = getJWTTokenCliente(user.getUsername());
+			user.setToken(token);
 			return ResponseEntity.status(HttpStatus.CREATED).body(userService.registrar(user));
 		}
 	}
@@ -113,38 +114,42 @@ public class UserController {
 //				.setIssuedAt(new Date(System.currentTimeMillis()))
 //				.setExpiration(new Date(System.currentTimeMillis() + 600000))
 //				.signWith(SignatureAlgorithm.HS512, secretKey.getBytes()).compact();
+//		return token;
+//	}
+//	
+//	private String getJWTTokenCiente(String username) {
+//		String secretKey = "mySecretKey";
+//		List<GrantedAuthority> grantedAuthorities = AuthorityUtils
+//				.commaSeparatedStringToAuthorityList(username);
+//		String token = Jwts.builder().setId("softtekJWT").setSubject(username)
+//				.claim("authorities",
+//						grantedAuthorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+//				.setIssuedAt(new Date(System.currentTimeMillis()))
+//				.setExpiration(new Date(System.currentTimeMillis() + 6000000))
+//				.signWith(SignatureAlgorithm.HS512, secretKey.getBytes()).compact();
+//		System.out.println("Login: "+token);
 //		return "Bearer " + token;
 //	}
-	
-	private String getJWTTokenCiente(String username) {
-		String secretKey = "mySecretKey";
-		List<GrantedAuthority> grantedAuthorities = AuthorityUtils
-				.commaSeparatedStringToAuthorityList(username);
+////
+//	
+	public String getJWTTokenCliente(String username) {
+		String SECRET_KEY = "mySecretKey";
+		List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(username);
 		String token = Jwts.builder().setId("softtekJWT").setSubject(username)
 				.claim("authorities",
 						grantedAuthorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
 				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + 600000))
-				.signWith(SignatureAlgorithm.HS512, secretKey.getBytes()).compact();
-		System.out.println("Login: "+token);
-		return "Bearer " + token;
+				.setExpiration(new Date(System.currentTimeMillis() + 6000000))
+				.signWith(SignatureAlgorithm.HS512, SECRET_KEY.getBytes()).compact();
+		System.out.println("Login: " + token);
+		return token;
 	}
-//
-	public String validateToken(String token) {
-		String secretKey = "mySecretKey";
-		System.out.println("validate "+token);
-		try {
-	        Claims claims = Jwts.parser()
-	                .setSigningKey(secretKey) // Clave secreta utilizada para firmar el token
-	                .parseClaimsJws(token)
-	                .getBody();
 
-	        // Extraer el nombre de usuario del token
-	        System.out.println("validate "+claims.getSubject());
-	        return claims.getSubject();
-	    } catch (JwtException | IllegalArgumentException e) {
-	        throw new IllegalArgumentException("Token JWT invalido");
-	    }
+//
+//	 
+	public Claims parseToken(String token) {
+		String SECRET_KEY = "mySecretKey";
+		return Jwts.parser().setSigningKey(SECRET_KEY.getBytes()).parseClaimsJws(token).getBody();
 	}
 
 	// Usuario
@@ -320,33 +325,27 @@ public class UserController {
 
 	@PostMapping("/register/citas")
 	public ResponseEntity<?> insertCitas(@RequestBody CitasModel citas, @RequestHeader("Authorization") String token) {
-		boolean exist = citasService.findByFechaCitas(citas.getFechaCita())!=null;
-		
+		boolean exist = citasService.findByFechaCitas(citas.getFechaCita()) != null;
+
 		System.out.println(token);
-		String username=validateToken(token);
-		if (!exist && token!=null) {
-		    try {
-		    	
-//		        String username=validateToken(token);
-		        Cliente cliente = clienteService.findByEmail(username);
-		        citas.setCliente(cliente);
-		        
-		        List<Citas> listCitas= cliente.getCitas();
-		        listCitas.add(citasService.transform(citas));
-		        
-		        cliente.setCitas(listCitas);
-		        clienteService.updateCliente(clienteService.transform(cliente));
-		        
-		        return ResponseEntity.status(HttpStatus.CREATED).body(citasService.addCitas(citas));
-		    }catch (Exception e) {
-				System.out.println(e.toString());
+
+		if (!exist && token != null) {
+			
+			Claims claimsusername = parseToken(token);
+			String username = claimsusername.getSubject();
+			Cliente cliente = clienteService.findByEmail(username);
+			if (cliente != null) {
+				citas.setCliente(cliente);
+//				clienteService.updateCliente(clienteService.transform(cliente));
+
+				return ResponseEntity.status(HttpStatus.CREATED).body(citasService.addCitas(citas));
 			}
+
 		}
 		return ResponseEntity.internalServerError().body("ERROR");
-		
-	
+
 	}
-	
+
 	// Ver todos
 	@GetMapping("/all/citas")
 	public ResponseEntity<?> Citas() {

@@ -5,8 +5,8 @@
 import FlutterMacOS
 import Foundation
 
-import macos_ui
+import flutter_secure_storage_macos
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
-  MacOSUiPlugin.register(with: registry.registrar(forPlugin: "MacOSUiPlugin"))
+  FlutterSecureStoragePlugin.register(with: registry.registrar(forPlugin: "FlutterSecureStoragePlugin"))
 }

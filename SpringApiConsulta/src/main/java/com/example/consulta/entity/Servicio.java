@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -42,25 +43,44 @@ public class Servicio {
 //	@ManyToMany(cascade= CascadeType.ALL)
 //	private List<Tratamiento> tratamientos;
 	
-	@OneToMany(cascade= CascadeType.ALL, mappedBy="servicio")
-	private List<Citas> citas;
+//	@OneToMany(cascade= CascadeType.ALL, mappedBy="servicio")
+//	private List<Citas> citas;
 
 
-	@OneToMany(cascade= CascadeType.ALL,mappedBy="servicio")
-    private List<Tratamiento> tratamientos;
+//	@OneToMany(cascade= CascadeType.ALL,mappedBy="servicio")
+//    private List<Tratamiento> tratamientos;
 
+	@ManyToOne
+	@JoinColumn(name="tratamiento")
+	private Tratamiento tratamiento;
+	
 	public Servicio() {
 		super();
 	}
 
-	public Servicio(long id, String nombre, float precio, List<Citas> citas, List<Tratamiento> tratamientos) {
+	
+	
+	public Servicio(long id, String nombre, float precio, Tratamiento tratamiento) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.precio = precio;
-		this.citas = citas;
-		this.tratamientos = tratamientos;
+		this.tratamiento = tratamiento;
 	}
+
+
+
+	public Tratamiento getTratamiento() {
+		return tratamiento;
+	}
+
+
+
+	public void setTratamiento(Tratamiento tratamiento) {
+		this.tratamiento = tratamiento;
+	}
+
+
 
 	public long getId() {
 		return id;
@@ -86,28 +106,11 @@ public class Servicio {
 		this.precio = precio;
 	}
 
-	public List<Citas> getCitas() {
-		return citas;
-	}
-
-	public void setCitas(List<Citas> citas) {
-		this.citas = citas;
-	}
-
-	public List<Tratamiento> getTratamientos() {
-		return tratamientos;
-	}
-
-	public void setTratamientos(List<Tratamiento> tratamientos) {
-		this.tratamientos = tratamientos;
-	}
 
 	@Override
 	public String toString() {
-		return "Servicio [id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", citas=" + citas
-				+ ", tratamientos=" + tratamientos + "]";
+		return "Servicio [id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", tratamiento=" + tratamiento
+				+ "]";
 	}
-
-	
 
 }

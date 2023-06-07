@@ -9,7 +9,7 @@ public class CitasModel {
 	private long id;
 	private String fechaCita;
 	private Cliente cliente;
-	private Historial historial;
+	//private Historial historial;
 	private Servicio servicio;
 	private boolean activa;
 	
@@ -19,15 +19,13 @@ public class CitasModel {
 	}
 
 
-	public CitasModel(long id, String fechaCita, Cliente cliente, Historial historial, Servicio servicio,
-			boolean activa) {
+	public CitasModel(long id, String fechaCita, boolean activa, Cliente cliente, Servicio servicio) {
 		super();
 		this.id = id;
 		this.fechaCita = fechaCita;
-		this.cliente = cliente;
-		this.historial = historial;
-		this.servicio = servicio;
 		this.activa = activa;
+		this.cliente = cliente;
+		this.servicio = servicio;
 	}
 
 
@@ -61,16 +59,6 @@ public class CitasModel {
 	}
 
 
-	public Historial getHistorial() {
-		return historial;
-	}
-
-
-	public void setHistorial(Historial historial) {
-		this.historial = historial;
-	}
-
-
 	public Servicio getServicio() {
 		return servicio;
 	}
@@ -93,9 +81,11 @@ public class CitasModel {
 
 	@Override
 	public String toString() {
-		return "CitasModel [id=" + id + ", fechaCita=" + fechaCita + ", cliente=" + cliente + ", historial=" + historial
-				+ ", servicio=" + servicio + ", activa=" + activa + "]";
+		return "CitasModel [id=" + id + ", fechaCita=" + fechaCita + ", cliente=" + cliente + ", servicio=" + servicio
+				+ ", activa=" + activa + "]";
 	}
+
+
 
 	
 	

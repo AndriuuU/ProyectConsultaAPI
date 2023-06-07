@@ -1,7 +1,7 @@
 
 import 'dart:convert';
 
-class Usuario {
+class UsuarioModel {
     int id;
     String username;
     String password;
@@ -9,7 +9,7 @@ class Usuario {
     String role;
     dynamic token;
 
-    Usuario({
+    UsuarioModel({
         required this.id,
         required this.username,
         required this.password,
@@ -18,11 +18,11 @@ class Usuario {
         this.token,
     });
 
-    factory Usuario.fromJson(String str) => Usuario.fromMap(json.decode(str));
+    factory UsuarioModel.fromJson(String str) => UsuarioModel.fromMap(json.decode(str));
 
     String toJson() => json.encode(toMap());
 
-    factory Usuario.fromMap(Map<String, dynamic> json) => Usuario(
+    factory UsuarioModel.fromMap(Map<String, dynamic> json) => UsuarioModel(
         id: json["id"],
         username: json["username"],
         password: json["password"],

@@ -20,29 +20,30 @@ public class Citas {
 	private String fechaCita;
 	
 	private boolean activa;
-	
+
 	@ManyToOne
-	@JoinColumn(name="Cliente")
-	private Cliente cliente;
+    @JoinColumn(name = "cliente")
+    private Cliente cliente;	
 	
-	@ManyToOne
-	@JoinColumn(name="citas")
-	private Historial historial;
+//	@ManyToOne
+//	@JoinColumn(name="citas")
+//	private Historial historial;
 	
 	@ManyToOne
 	@JoinColumn(name="servicio")
 	private Servicio servicio;
 
 
-	public Citas(@Nullable long id, @Nullable String fechaCita, @Nullable Cliente cliente, @Nullable Historial historial, @Nullable Servicio servicio, boolean activa) {
-	    super();
-	    this.id = id;
-	    this.fechaCita = fechaCita;
-	    this.cliente = cliente;
-	    this.historial = historial;
-	    this.servicio = servicio;
-	    this.activa = activa;
+	
+	public Citas(long id, String fechaCita, boolean activa, Cliente cliente, Servicio servicio) {
+		super();
+		this.id = id;
+		this.fechaCita = fechaCita;
+		this.activa = activa;
+		this.cliente = cliente;
+		this.servicio = servicio;
 	}
+
 	public Citas() {
 		super();
 	}
@@ -55,13 +56,7 @@ public class Citas {
 		this.cliente = cliente;
 	}
 
-	public Historial getHistorial() {
-		return historial;
-	}
 
-	public void setHistorial(Historial historial) {
-		this.historial = historial;
-	}
 
 	public long getId() {
 		return id;
@@ -101,9 +96,10 @@ public class Citas {
 
 	@Override
 	public String toString() {
-		return "Citas [id=" + id + ", fechaCita=" + fechaCita + ", cliente=" + cliente + ", historial=" + historial
-				+ ", servicio=" + servicio + ", activa=" + activa + "]";
+		return "Citas [id=" + id + ", fechaCita=" + fechaCita + ", activa=" + activa + ", cliente=" + cliente
+				+ ", servicio=" + servicio + "]";
 	}
+
 
 	
 }

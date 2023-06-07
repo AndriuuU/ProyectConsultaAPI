@@ -91,7 +91,6 @@ public class ClienteServiceImpl implements ClienteService {
 		cliente.setTelefono(cliente.getTelefono());
 		cliente.setPassword(userService.passwordEncoder().encode(cliente.getPassword()));
 		cliente.setUsuario(cliente.getUsuario());
-		cliente.setHistorial(null);
 		return clienteRepository.save(transform(cliente));
 	}
 
@@ -113,11 +112,6 @@ public class ClienteServiceImpl implements ClienteService {
 
 	}
 
-	@Override
-	public Cliente insertHistorialCliente(ClienteModel cliente) {
-		cliente.setHistorial(HistorialCliente(cliente));
-		return clienteRepository.save(transform(cliente));
-	}
 	
 	public List<Historial> HistorialCliente(ClienteModel cliente) {
 		List<HistorialModel> listHistorialModel=historialService.listAllHistorials();

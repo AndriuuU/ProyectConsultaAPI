@@ -13,7 +13,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
-
 @Entity
 public class Cliente {
 
@@ -32,9 +31,9 @@ public class Cliente {
 	private String direccion;
 	
 	private String telefono;
-	
-	@OneToMany(cascade= CascadeType.ALL, mappedBy="cliente")
-	private List<Citas> citas;
+//	
+//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
+//    private List<Citas> citas;
 	
 	@Column(name = "password", nullable = false)
 	private String password;
@@ -47,8 +46,8 @@ public class Cliente {
 //	private List<Citas> citas;
 
 
-	@OneToMany(cascade= CascadeType.ALL,mappedBy = "cliente")
-    private List<Historial> historiales;
+//	@OneToMany(cascade= CascadeType.ALL,mappedBy = "cliente")
+//    private List<Historial> historiales;
 
 	public Cliente() {
 		super();
@@ -79,20 +78,8 @@ public class Cliente {
 		this.usuario = usuario;
 	}
 
-	public Cliente(Long id, String nombre, String email, boolean seguro, String direccion, String telefono,
-			List<Citas> citas, String password, User usuario, List<Historial> historiales) {
-		super();
-		this.id = id;
-		this.nombre = nombre;
-		this.email = email;
-		this.seguro = seguro;
-		this.direccion = direccion;
-		this.telefono = telefono;
-		this.citas = citas;
-		this.password = password;
-		this.usuario = usuario;
-		this.historiales = historiales;
-	}
+	
+
 
 
 	public Long getId() {
@@ -155,17 +142,6 @@ public class Cliente {
 	}
 
 
-
-	public List<Historial> getHistoriales() {
-		return historiales;
-	}
-
-
-	public void setHistoriales(List<Historial> historiales) {
-		this.historiales = historiales;
-	}
-
-
 	public String getPassword() {
 		return password;
 	}
@@ -186,20 +162,11 @@ public class Cliente {
 	}
 
 
-	public List<Citas> getCitas() {
-		return citas;
-	}
-
-
-	public void setCitas(List<Citas> citas) {
-		this.citas = citas;
-	}
-
 
 	@Override
 	public String toString() {
 		return "Cliente [id=" + id + ", nombre=" + nombre + ", email=" + email + ", seguro=" + seguro + ", direccion="
-				+ direccion + ", telefono=" + telefono + ", password=" + password + ", historiales=" + historiales + "]";
+				+ direccion + ", telefono=" + telefono + ", password=" + password + "]";
 	}
 
 

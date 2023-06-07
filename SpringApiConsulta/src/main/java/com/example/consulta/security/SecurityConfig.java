@@ -18,8 +18,7 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf().disable().addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class).
-		authorizeHttpRequests((requests) -> requests.
-			requestMatchers("/**").permitAll());
+		authorizeHttpRequests((requests) -> requests.requestMatchers("/**").permitAll());
 //			);
 //			requestMatchers("/", "/imgs/","/photos/","/auth/**","/webjars/**","/css/**","/noticias/**","/files/**").permitAll().
 //			requestMatchers("/api/admin/**").hasRole("ADMIN").

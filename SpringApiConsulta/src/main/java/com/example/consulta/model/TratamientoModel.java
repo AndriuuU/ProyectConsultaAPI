@@ -9,23 +9,19 @@ public class TratamientoModel {
 	private String nombre;
 	private float precio;
 	private String cadaCuanto;
-	private Servicio servicio;
+//	private Servicio servicio;
 	
 	public TratamientoModel() {
 		super();
 	}
 
-	
-	public TratamientoModel(long id, String nombre, float precio, String cadaCuanto,
-			Servicio servicio) {
+	public TratamientoModel(long id, String nombre, float precio, String cadaCuanto) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.precio = precio;
 		this.cadaCuanto = cadaCuanto;
-		this.servicio = servicio;
 	}
-
 
 	public long getId() {
 		return id;
@@ -57,15 +53,6 @@ public class TratamientoModel {
 
 	public void setCadaCuanto(String cadaCuanto) {
 		this.cadaCuanto = cadaCuanto;
-	}
-
-	public Servicio getServicio() {
-		return servicio;
-	}
-
-
-	public void setServicio(Servicio servicio) {
-		this.servicio = servicio;
 	}
 
 

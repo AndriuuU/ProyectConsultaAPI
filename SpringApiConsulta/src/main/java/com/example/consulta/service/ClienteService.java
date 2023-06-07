@@ -17,8 +17,6 @@ public interface ClienteService {
 	
 	public abstract Cliente updateCliente(ClienteModel ClientesModel);
 	
-	public abstract Cliente insertHistorialCliente(ClienteModel ClientesModel);
-	
 	public abstract Cliente transform(ClienteModel ClientesModel);
 	
 	public abstract ClienteModel transform(Cliente Clientes);

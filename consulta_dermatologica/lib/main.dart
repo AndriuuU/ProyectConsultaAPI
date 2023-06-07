@@ -31,6 +31,9 @@ class MyApp extends StatelessWidget {
       routes: {
         'login': ( _ ) => LoginScreen(),
         'register': (_) => RegisterScreen(),
+        'home': (_) => HomeScreen(),
+        'obtenercita': (_) => ObtenercitaScreen(),
+        'vercita': (_) => VercitaScreen(),
       },
       theme: ThemeData.light().copyWith(
         scaffoldBackgroundColor: Colors.grey[300]

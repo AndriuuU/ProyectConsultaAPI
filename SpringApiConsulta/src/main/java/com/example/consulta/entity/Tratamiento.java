@@ -22,24 +22,24 @@ public class Tratamiento {
 	
 	private String cadaCuanto;
 
-	@ManyToOne
-	@JoinColumn(name="servicio")
-	private Servicio servicio;
+//	@ManyToOne
+//	@JoinColumn(name="servicio")
+//	private Servicio servicio;
 	
 	public Tratamiento() {
 		super();
 	}
 
-	
-	public Tratamiento(long id, String nombre, float precio, String cadaCuanto, 
-			Servicio servicio) {
-		super();
-		this.id = id;
-		this.nombre = nombre;
-		this.precio = precio;
-		this.cadaCuanto = cadaCuanto;
-		this.servicio = servicio;
-	}
+
+	public Tratamiento(long id, String nombre, float precio, String cadaCuanto) {
+	super();
+	this.id = id;
+	this.nombre = nombre;
+	this.precio = precio;
+	this.cadaCuanto = cadaCuanto;
+}
+
+
 
 
 	public long getId() {
@@ -72,15 +72,6 @@ public class Tratamiento {
 
 	public void setCadaCuanto(String cadaCuanto) {
 		this.cadaCuanto = cadaCuanto;
-	}
-
-	public Servicio getServicio() {
-		return servicio;
-	}
-
-
-	public void setServicio(Servicio servicio) {
-		this.servicio = servicio;
 	}
 
 

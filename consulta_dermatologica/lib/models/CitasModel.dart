@@ -1,41 +1,34 @@
-import 'dart:convert';
 
-class Cita {
+import 'models.dart';
+
+class CitasModel {
     int id;
     String fechaCita;
-    dynamic cliente;
-    dynamic historial;
-    dynamic servicio;
+    ClienteModel cliente;
+    ServicioModel servicio;
     bool activa;
 
-    Cita({
+    CitasModel({
         required this.id,
         required this.fechaCita,
-        this.cliente,
-        this.historial,
-        this.servicio,
+        required this.cliente,
+        required this.servicio,
         required this.activa,
     });
 
-    factory Cita.fromJson(String str) => Cita.fromMap(json.decode(str));
-
-    String toJson() => json.encode(toMap());
-
-    factory Cita.fromMap(Map<String, dynamic> json) => Cita(
+    factory CitasModel.fromJson(Map<String, dynamic> json) => CitasModel(
         id: json["id"],
         fechaCita: json["fechaCita"],
-        cliente: json["cliente"],
-        historial: json["historial"],
-        servicio: json["servicio"],
+        cliente: ClienteModel.fromJson(json["cliente"]),
+        servicio: ServicioModel.fromJson(json["servicio"]),
         activa: json["activa"],
     );
 
-    Map<String, dynamic> toMap() => {
+    Map<String, dynamic> toJson() => {
         "id": id,
         "fechaCita": fechaCita,
-        "cliente": cliente,
-        "historial": historial,
-        "servicio": servicio,
+        "cliente": cliente.toJson(),
+        "servicio": servicio.toJson(),
         "activa": activa,
     };
 }

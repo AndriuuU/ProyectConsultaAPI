@@ -11,15 +11,15 @@ public class HistorialModel {
 	private long id;
 	private boolean asistio;
 	private Cliente cliente;
-	private List<Citas> Citas;
+	private Citas citas;
 
 	
-	public HistorialModel(long id, boolean asistio, Cliente cliente, List<com.example.consulta.entity.Citas> citas) {
+	public HistorialModel(long id, boolean asistio, Cliente cliente, Citas citas) {
 		super();
 		this.id = id;
 		this.asistio = asistio;
 		this.cliente = cliente;
-		Citas = citas;
+		this.citas = citas;
 	}
 	
 	public boolean isAsistio() {
@@ -48,11 +48,11 @@ public class HistorialModel {
 		this.id = id;
 	}
 	
-	public List<Citas> getCitas() {
-		return Citas;
+	public Citas getcitas() {
+		return citas;
 	}
-	public void setCitas(List<Citas> citas) {
-		Citas = citas;
+	public void setcitas(Citas citas) {
+		citas = citas;
 	}
 	@Override
 	public String toString() {

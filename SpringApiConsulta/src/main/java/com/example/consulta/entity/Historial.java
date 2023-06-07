@@ -25,18 +25,21 @@ public class Historial {
     @JoinColumn(name = "cliente_id")
 	private Cliente cliente;
 
-	
-	@OneToMany(cascade= CascadeType.ALL, mappedBy="historial")
-	private List<Citas> Citas;
+	@ManyToOne
+    @JoinColumn(name = "citas")
+	private Citas citas;
+//	
+//	@OneToMany(cascade= CascadeType.ALL, mappedBy="historial")
+//	private List<Citas> Citas;
 
 
 
-	public Historial(long id, boolean asistio, Cliente cliente, List<com.example.consulta.entity.Citas> citas) {
+	public Historial(long id, boolean asistio, Cliente cliente, Citas citas) {
 	super();
 	this.id = id;
 	this.asistio = asistio;
 	this.cliente = cliente;
-	Citas = citas;
+	this.citas = citas;
 }
 	public Historial() {
 		super();
@@ -54,11 +57,11 @@ public class Historial {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-	public List<Citas> getCitas() {
-		return Citas;
+	public Citas getCitas() {
+		return citas;
 	}
-	public void setCitas(List<Citas> citas) {
-		Citas = citas;
+	public void setCitas(Citas citas) {
+		this.citas = citas;
 	}
 	
 	public boolean isAsistio() {

@@ -11,21 +11,38 @@ public class ServicioModel {
 	private long id;
 	private String nombre;
 	private float precio;
-	private List<Citas> citas;
-	private List<Tratamiento> tratamientos;
+//	private List<Citas> citas;
+//	private List<Tratamiento> tratamientos;
+	private Tratamiento tratamiento;
 
 	public ServicioModel() {
 		super();
 	}
 
-	public ServicioModel(long id, String nombre, float precio, List<Citas> citas, List<Tratamiento> tratamientos) {
+
+	
+
+
+//	public ServicioModel(long id, String nombre, float precio, List<Citas> citas, List<Tratamiento> tratamientos) {
+//		super();
+//		this.id = id;
+//		this.nombre = nombre;
+//		this.precio = precio;
+//		this.citas = citas;
+//		this.tratamientos = tratamientos;
+//	}
+
+	public ServicioModel(long id, String nombre, float precio, Tratamiento tratamiento) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.precio = precio;
-		this.citas = citas;
-		this.tratamientos = tratamientos;
+		this.tratamiento = tratamiento;
 	}
+
+
+
+
 
 	public long getId() {
 		return id;
@@ -51,26 +68,19 @@ public class ServicioModel {
 		this.precio = precio;
 	}
 
-	public List<Citas> getCitas() {
-		return citas;
+	public Tratamiento getTratamiento() {
+		return tratamiento;
 	}
 
-	public void setCitas(List<Citas> citas) {
-		this.citas = citas;
-	}
 
-	public List<Tratamiento> getTratamientos() {
-		return tratamientos;
-	}
-
-	public void setTratamientos(List<Tratamiento> tratamientos) {
-		this.tratamientos = tratamientos;
+	public void setTratamiento(Tratamiento tratamiento) {
+		this.tratamiento = tratamiento;
 	}
 
 	@Override
 	public String toString() {
-		return "Servicio [id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", citas=" + citas
-				+ ", tratamientos=" + tratamientos + "]";
+		return "ServicioModel [id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", tratamiento=" + tratamiento
+				+ "]";
 	}
 
 	

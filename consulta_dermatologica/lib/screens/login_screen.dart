@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:consulta_dermatologica/providers/login_form_provider.dart';
 import 'package:consulta_dermatologica/services/services.dart';
 import 'package:consulta_dermatologica/widgets/widgets.dart';
+import '../models/models.dart';
 import '../ui/input_decorations.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -110,13 +111,13 @@ class _LoginForn extends StatelessWidget {
 
                         loginForm.isLoading = true;
 
-                        final String? errorMessage = await authService.login(
+                        final UsuarioModel? usuario = await authService.login(
                             loginForm.email, loginForm.password);
 
-                        if (errorMessage != null) {
-                          if (errorMessage == "u") {
+                        if (usuario != null) {
+                          if (usuario.role == "ROLE_USER") {
                             Navigator.pushReplacementNamed(context, 'home');
-                          } else if (errorMessage == "a") {
+                          } else if (usuario.role == "ROLE_ADMIN") {
                             //Menu admin
                             Navigator.pushReplacementNamed(context, 'graphs');
                           }
