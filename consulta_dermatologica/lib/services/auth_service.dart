@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -55,8 +54,12 @@ Future<UsuarioModel?> login(String username, String password) async {
       'password': password,
     };
 
+    print(username);
+    print(password);
+    print(json.encode(authData));
     final url = Uri.http(_baseUrl, '/api/login', {});
 
+    print(url);
     final resp = await http.post(url,
         headers: {
           'Content-type': 'application/json',
@@ -66,16 +69,17 @@ Future<UsuarioModel?> login(String username, String password) async {
         body: json.encode(authData));
 
     var a = UsuarioModel.fromJson(resp.body);
-
-    if (a.id!=null) {
+  notifyListeners();
+    if (a!=null) {
       await storage.write(key: 'token', value: a.token);
-      await storage.write(key: 'id', value: a.id.toString());
-      
-      print(a);
+      await storage.write(key: 'usurname', value: a.username);
+      print(await storage.read(key: 'usurname'));
+      print(a.username);
       return a;
     } else {
       return null;
     }
+  
   }
   
   Future<String> readToken() async {
@@ -85,7 +89,7 @@ Future<UsuarioModel?> login(String username, String password) async {
   }
   Future<String> readId() async {
     
-    return await storage.read(key: 'id') ?? '';
+    return await storage.read(key: 'usurname') ?? '';
     
   }
   

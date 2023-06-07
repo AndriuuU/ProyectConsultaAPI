@@ -13,6 +13,7 @@ class AppState extends StatelessWidget{
     return MultiProvider(
       providers: [
          ChangeNotifierProvider(create: (_) => AuthService()),
+          ChangeNotifierProvider(create: (_) => CitasService()),
       ],
       child: MyApp(),
     );

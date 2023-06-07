@@ -78,16 +78,15 @@ public class UserController {
 	private AuthenticationManager authenticationManager;
 
 	@PostMapping("/login")
-	public com.example.consulta.entity.User login(@RequestParam("username") String username,
-			@RequestParam("password") String password) {
+	public com.example.consulta.entity.User login(@RequestBody com.example.consulta.entity.User user) {
 
 		Authentication authentication = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+				.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		com.example.consulta.entity.User usuario = userService.findUsuario(username);
-		String token = getJWTTokenCliente(username);
-		usuario.setUsername(username);
-		usuario.setPassword(password);
+		com.example.consulta.entity.User usuario = userService.findUsuario(user.getUsername());
+		String token = getJWTTokenCliente(user.getUsername());
+		usuario.setUsername(user.getUsername());
+		usuario.setPassword(user.getPassword());
 		usuario.setToken(token);
 		return usuario;
 	}
@@ -352,6 +351,16 @@ public class UserController {
 		List<CitasModel> exist = citasService.listAllCitass();
 		if (exist != null) {
 			return ResponseEntity.ok(exist);
+		} else
+			return ResponseEntity.noContent().build();
+	}
+	// Ver una cita
+	@GetMapping("/get/citas/cliente/{email}")
+	public ResponseEntity<?> CitasCliente(@PathVariable String email) {
+		Cliente cliente=clienteService.findByEmail(email);
+		List<CitasModel> miCita = citasService.listCitasCliente(cliente.getId());
+		if (miCita != null) {
+			return ResponseEntity.ok(miCita);
 		} else
 			return ResponseEntity.noContent().build();
 	}

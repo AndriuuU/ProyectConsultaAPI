@@ -86,7 +86,7 @@ public class CitasServiceImpl implements CitasService {
 		List<CitasModel> listaClitassCliente=listAllCitass();
 		List<CitasModel> clienteCita = new ArrayList<>();
 		for(CitasModel cita: listaClitassCliente) {
-			if(cita.getCliente().getId()!=0) {
+			if(cita.getCliente().getId()==idCliente) {
 				clienteCita.add(cita);
 			}
 		}

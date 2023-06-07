@@ -2,19 +2,19 @@
 import 'dart:convert';
 
 class UsuarioModel {
-    int id;
-    String username;
-    String password;
-    bool enable;
-    String role;
-    dynamic token;
+    int? id;
+    String? username;
+    String? password;
+    bool? enable;
+    String? role;
+    dynamic? token;
 
     UsuarioModel({
-        required this.id,
-        required this.username,
-        required this.password,
-        required this.enable,
-        required this.role,
+        this.id,
+        this.username,
+        this.password,
+        this.enable,
+        this.role,
         this.token,
     });
 

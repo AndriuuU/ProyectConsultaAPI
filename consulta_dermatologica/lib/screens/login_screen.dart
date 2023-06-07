@@ -5,6 +5,7 @@ import 'package:consulta_dermatologica/services/services.dart';
 import 'package:consulta_dermatologica/widgets/widgets.dart';
 import '../models/models.dart';
 import '../ui/input_decorations.dart';
+import 'screens.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -61,15 +62,7 @@ class _LoginForn extends StatelessWidget {
                     hintText: 'prueba@gmail.com',
                     labelText: 'Correo electronico',
                     prefixIcon: Icons.alternate_email_rounded),
-                onChanged: (value) => loginForm.email = value,
-                validator: (value) {
-                  String pattern =
-                      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                  RegExp regExp = new RegExp(pattern);
-                  return regExp.hasMatch(value ?? '')
-                      ? null
-                      : 'Escribe un correo valido';
-                },
+                onChanged: (value) => loginForm.email = value
               ),
               SizedBox(height: 20),
               TextFormField(
@@ -82,9 +75,9 @@ class _LoginForn extends StatelessWidget {
                     prefixIcon: Icons.lock_outline),
                 onChanged: (value) => loginForm.password = value,
                 validator: (value) {
-                  return (value != null && value.length >= 6)
+                  return (value != null && value.length >= 4)
                       ? null
-                      : 'La contraseña tiene que tener mas de 6 caracteres';
+                      : 'La contraseña tiene que tener mas de 4 caracteres';
                 },
               ),
               SizedBox(height: 25),
@@ -109,21 +102,30 @@ class _LoginForn extends StatelessWidget {
 
                         if (!loginForm.isValidForm()) return;
 
-                        loginForm.isLoading = true;
+                        
 
                         final UsuarioModel? usuario = await authService.login(
                             loginForm.email, loginForm.password);
 
+                       
                         if (usuario != null) {
                           if (usuario.role == "ROLE_USER") {
+                           
+
                             Navigator.pushReplacementNamed(context, 'home');
+                            /*
+                            final citasService =
+                            Provider.of<CitasService>(context, listen: false);
+                            final CitasModel? misCitas = await citasService.miCita(); 
+                            */
+
                           } else if (usuario.role == "ROLE_ADMIN") {
                             //Menu admin
                             Navigator.pushReplacementNamed(context, 'graphs');
                           }
                         } else {
                           print('Error con el usuario o contraseña');
-                          loginForm.isLoading = false;
+                          
                         }
                       },
               )
