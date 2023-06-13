@@ -92,5 +92,49 @@ Future<UsuarioModel?> login(String username, String password) async {
     return await storage.read(key: 'usurname') ?? '';
     
   }
+
+  
+  
+}
+
+class ListClientes extends ChangeNotifier{
+  final String _baseUrl="192.168.1.137:8080";
+  //final String _firebaseToken='';
+  listClientes() {
+    this.getListClientes();
+  }
+
+  List<ClienteModel> listaClienteAdmin=[];
+
+  getListClientes() async {
+
+    final url=Uri.http(_baseUrl,'/api/all/cliente',{});
+    print(url);
+
+    final resp = await http.get(url, 
+        headers: {
+          'Content-type': 'application/json',
+          'Accept': 'application/json',
+          "Authorization": "Some token"
+        } );
+
+    print(resp.body);
+
+   if (resp.statusCode == 200) {
+    final responseBody = json.decode(resp.body);
+
+
+    for (var citaMap in responseBody) {
+      listaClienteAdmin.add(ClienteModel.fromJson(citaMap));
+    }
+
+    // Aquí tienes la lista final de citas
+    print(listaClienteAdmin);
+  } else {
+    print('Error en la solicitud: ${resp.statusCode}');
+  }
+    notifyListeners();
+
+  }
   
 }

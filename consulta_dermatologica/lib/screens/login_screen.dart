@@ -121,7 +121,7 @@ class _LoginForn extends StatelessWidget {
 
                           } else if (usuario.role == "ROLE_ADMIN") {
                             //Menu admin
-                            Navigator.pushReplacementNamed(context, 'graphs');
+                            Navigator.pushReplacementNamed(context, 'calendarioadmin');
                           }
                         } else {
                           print('Error con el usuario o contraseña');

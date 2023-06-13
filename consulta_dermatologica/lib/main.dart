@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'screens/screens.dart';
 import 'services/auth_service.dart';
+import 'services/services.dart';
 
 void main() => runApp(AppState());
 
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         'calendariocitas': (_) => CalendarioCitasScreen(),
         'obtenercita': (_) => ObtenerCita(),
         'vercita': (_) => VercitaScreen(),
+        'calendarioadmin': (_) => CalendarioCitasAdminScreen(),
       },
       theme: ThemeData.light().copyWith(
         scaffoldBackgroundColor: Colors.grey[300]

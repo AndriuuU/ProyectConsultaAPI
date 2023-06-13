@@ -54,3 +54,46 @@ class CitasService extends ChangeNotifier{
   
     
 }
+
+class CitasServiceAdmin extends ChangeNotifier{
+  final String _baseUrl="192.168.1.137:8080";
+
+  CitasServiceAdmin() {
+    this.getListCitasAdmin();
+  }
+
+  List<CitasModel> listaCitasAdmin=[];
+
+  getListCitasAdmin() async {
+
+    final url=Uri.http(_baseUrl,'/api/all/citas',{});
+    print(url);
+
+    final resp = await http.get(url, 
+        headers: {
+          'Content-type': 'application/json',
+          'Accept': 'application/json',
+          "Authorization": "Some token"
+        } );
+
+    print(resp.body);
+
+   if (resp.statusCode == 200) {
+    final responseBody = json.decode(resp.body);
+
+
+    for (var citaMap in responseBody) {
+      listaCitasAdmin.add(CitasModel.fromJson(citaMap));
+    }
+
+    // Aquí tienes la lista final de citas
+    print(listaCitasAdmin);
+  } else {
+    print('Error en la solicitud: ${resp.statusCode}');
+  }
+    notifyListeners();
+
+  }
+  
+    
+}

@@ -40,6 +40,7 @@ class _TableBasicsExampleState extends State<ObtenerCita> {
           // the time-part of compared DateTime objects.
           return isSameDay(_selectedDay, day);
         },
+        
         onDaySelected: (selectedDay, focusedDay) {
           if (!isSameDay(_selectedDay, selectedDay)) {
             // Call `setState()` when updating the selected day
@@ -61,7 +62,9 @@ class _TableBasicsExampleState extends State<ObtenerCita> {
           // No need to call `setState()` here
           _focusedDay = focusedDay;
         },
+        
       ),
+      
     );
   }
   
