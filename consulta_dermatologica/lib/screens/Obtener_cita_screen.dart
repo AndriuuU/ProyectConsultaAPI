@@ -3,14 +3,14 @@ import 'package:booking_calendar/booking_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 
-class BookingCalendarDemoApp extends StatefulWidget {
-  const BookingCalendarDemoApp({Key? key}) : super(key: key);
+class ObtenercitaScreen extends StatefulWidget {
+  const ObtenercitaScreen({Key? key}) : super(key: key);
 
   @override
-  State<BookingCalendarDemoApp> createState() => _BookingCalendarDemoAppState();
+  State<ObtenercitaScreen> createState() => _BookingCalendarDemoAppState();
 }
 
-class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
+class _BookingCalendarDemoAppState extends State<ObtenercitaScreen> {
   final now = DateTime.now();
   late BookingService mockBookingService;
 
