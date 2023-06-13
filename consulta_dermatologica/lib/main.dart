@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
         'register': (_) => RegisterScreen(),
         'home': (_) => HomeScreen(),
         'calendariocitas': (_) => CalendarioCitasScreen(),
+        'obtenercita': (_) => ObtenerCita(),
         'vercita': (_) => VercitaScreen(),
       },
       theme: ThemeData.light().copyWith(

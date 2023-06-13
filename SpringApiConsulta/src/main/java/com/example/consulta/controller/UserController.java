@@ -140,7 +140,6 @@ public class UserController {
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + 6000000))
 				.signWith(SignatureAlgorithm.HS512, SECRET_KEY.getBytes()).compact();
-		System.out.println("Login: " + token);
 		return token;
 	}
 

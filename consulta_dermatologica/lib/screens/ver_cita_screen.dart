@@ -110,7 +110,7 @@ class _VercitaScreen extends State<VercitaScreen> {
               Navigator.pushReplacementNamed(context, 'calendariocitas');
               break;
             case 2:
-              
+              Navigator.pushReplacementNamed(context, 'obtenercita');
               break;
           }
           setState(
