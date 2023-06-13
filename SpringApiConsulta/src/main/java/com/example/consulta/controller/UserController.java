@@ -329,7 +329,7 @@ public class UserController {
 		System.out.println(token);
 
 		if (!exist && token != null) {
-			
+
 			Claims claimsusername = parseToken(token);
 			String username = claimsusername.getSubject();
 			Cliente cliente = clienteService.findByEmail(username);
@@ -354,15 +354,21 @@ public class UserController {
 		} else
 			return ResponseEntity.noContent().build();
 	}
-	// Ver una cita
-	@GetMapping("/get/citas/cliente/{email}")
-	public ResponseEntity<?> CitasCliente(@PathVariable String email) {
-		Cliente cliente=clienteService.findByEmail(email);
-		List<CitasModel> miCita = citasService.listCitasCliente(cliente.getId());
-		if (miCita != null) {
-			return ResponseEntity.ok(miCita);
-		} else
-			return ResponseEntity.noContent().build();
+
+	// Ver una cliente
+	@GetMapping("/get/citas")
+	public ResponseEntity<?> CitasCliente(@RequestHeader("Authorization") String token) {
+		if (token != null) {
+			Claims claimsusername = parseToken(token);
+			String username = claimsusername.getSubject();
+			Cliente cliente = clienteService.findByEmail(username);
+			List<CitasModel> miCita = citasService.listCitasCliente(cliente.getId());
+			if (miCita != null) 
+				return ResponseEntity.ok(miCita);
+			
+		}
+		return ResponseEntity.noContent().build();
+		
 	}
 
 	// Ver una cita

@@ -6,6 +6,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:consulta_dermatologica/models/models.dart';
 
+import 'auth_service.dart';
+
 
 
 class CitasService extends ChangeNotifier{
@@ -20,28 +22,32 @@ class CitasService extends ChangeNotifier{
 
   getListCitas() async {
 
-    String? id= await storage.read(key: 'usurname');
-    final url=Uri.http(_baseUrl,'/api/get/citas/cliente/'+id!,{});
+    String token= await AuthService().readToken();
+    final url=Uri.http(_baseUrl,'/api/get/citas',{});
     print(url);
+
     final resp = await http.get(url, 
         headers: {
           'Content-type': 'application/json',
           'Accept': 'application/json',
-          "Authorization": "Some token"
+          "Authorization": token
         } );
 
     print(resp.body);
-    dynamic jsonResponse = jsonDecode(resp.body);
 
-    if (jsonResponse is List) {
-      listaCitas = jsonResponse
-          .map((json) => CitasModel.fromJson(json))
-          .toList();
-    } else {
-      // Manejar el caso en el que el JSON no sea una lista
-      listaCitas = [];
+   if (resp.statusCode == 200) {
+    final responseBody = json.decode(resp.body);
+
+
+    for (var citaMap in responseBody) {
+      listaCitas.add(CitasModel.fromJson(citaMap));
     }
 
+    // Aquí tienes la lista final de citas
+    print(listaCitas);
+  } else {
+    print('Error en la solicitud: ${resp.statusCode}');
+  }
     notifyListeners();
 
   }

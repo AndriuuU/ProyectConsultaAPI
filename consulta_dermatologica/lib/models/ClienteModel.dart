@@ -30,7 +30,7 @@ class ClienteModel {
         direccion: json["direccion"],
         telefono: json["telefono"],
         password: json["password"],
-        usuario: UsuarioModel.fromJson(json["usuario"]),
+        usuario: UsuarioModel.fromMap(json["usuario"]),
     );
 
     Map<String, dynamic> toJson() => {

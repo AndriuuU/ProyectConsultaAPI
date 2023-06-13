@@ -7,7 +7,7 @@ String tratamientoModelToJson(TratamientoModel data) => json.encode(data.toJson(
 class TratamientoModel {
     int id;
     String nombre;
-    int precio;
+    double precio;
     String cadaCuanto;
 
     TratamientoModel({

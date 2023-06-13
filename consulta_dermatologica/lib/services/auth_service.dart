@@ -87,7 +87,7 @@ Future<UsuarioModel?> login(String username, String password) async {
     return await storage.read(key: 'token') ?? '';
     
   }
-  Future<String> readId() async {
+  Future<String> readUsername() async {
     
     return await storage.read(key: 'usurname') ?? '';
     

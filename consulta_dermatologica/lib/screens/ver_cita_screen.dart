@@ -80,27 +80,27 @@ class _VercitaScreen extends State<VercitaScreen> {
     return Scaffold(
       appBar: AppBar(
             leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pushReplacementNamed(context, 'home')
+            icon: Icon(Icons.calendar_month_outlined),
+            onPressed: () => Navigator.pushReplacementNamed(context, 'vercita')
           ),
-            title: Text("Catalogo"),
+            title: Text("Mis citas"),
             backgroundColor: Color.fromARGB(255, 93, 109, 236)
           ),
       body: _listViewBody(context),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           const BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.edit_calendar),
+            label: 'Mis citas',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
-            label: 'Add article',
-            // onPressed: addArticulo(),
+            label: 'Nueva cita',
+            //onPressed: () => Navigator.pushReplacementNamed(context, 'vercita')
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: const Color.fromARGB(255, 111, 0, 255),
         onTap: (int index) {
           switch (index) {
             case 0:

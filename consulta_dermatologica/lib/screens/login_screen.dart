@@ -112,7 +112,7 @@ class _LoginForn extends StatelessWidget {
                           if (usuario.role == "ROLE_USER") {
                            
 
-                            Navigator.pushReplacementNamed(context, 'home');
+                           Navigator.pushReplacementNamed(context, 'vercita');
                             /*
                             final citasService =
                             Provider.of<CitasService>(context, listen: false);
