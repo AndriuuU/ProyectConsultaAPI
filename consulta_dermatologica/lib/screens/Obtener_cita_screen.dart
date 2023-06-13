@@ -1,8 +1,6 @@
 // Copyright 2019 Aleksander Woźniak
 // SPDX-License-Identifier: Apache-2.0
 
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -10,123 +8,62 @@ import 'package:consulta_dermatologica/src/utils.dart';
 
 class ObtenerCita extends StatefulWidget {
   @override
-  _TableMultiExampleState createState() => _TableMultiExampleState();
+  _TableBasicsExampleState createState() => _TableBasicsExampleState();
 }
 
-class _TableMultiExampleState extends State<ObtenerCita> {
-  final ValueNotifier<List<Event>> _selectedEvents = ValueNotifier([]);
-
-  // Using a `LinkedHashSet` is recommended due to equality comparison override
-  final Set<DateTime> _selectedDays = LinkedHashSet<DateTime>(
-    equals: isSameDay,
-    hashCode: getHashCode,
-  );
-
+class _TableBasicsExampleState extends State<ObtenerCita> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
-
-  @override
-  void dispose() {
-    _selectedEvents.dispose();
-    super.dispose();
-  }
-
-  List<Event> _getEventsForDay(DateTime day) {
-    // Implementation example
-    return kEvents[day] ?? [];
-  }
-
-  List<Event> _getEventsForDays(Set<DateTime> days) {
-    // Implementation example
-    // Note that days are in selection order (same applies to events)
-    return [
-      for (final d in days) ..._getEventsForDay(d),
-    ];
-  }
-
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    setState(() {
-      _focusedDay = focusedDay;
-      // Update values in a Set
-      if (_selectedDays.contains(selectedDay)) {
-        _selectedDays.remove(selectedDay);
-      } else {
-        _selectedDays.add(selectedDay);
-      }
-    });
-
-    _selectedEvents.value = _getEventsForDays(_selectedDays);
-  }
+  DateTime? _selectedDay;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('TableCalendar - Multi'),
-      ),
-      body: Column(
-        children: [
-          TableCalendar<Event>(
-            firstDay: kFirstDay,
-            lastDay: kLastDay,
-            focusedDay: _focusedDay,
-            calendarFormat: _calendarFormat,
-            eventLoader: _getEventsForDay,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            selectedDayPredicate: (day) {
-              // Use values from Set to mark multiple days as selected
-              return _selectedDays.contains(day);
-            },
-            onDaySelected: _onDaySelected,
-            onFormatChanged: (format) {
-              if (_calendarFormat != format) {
-                setState(() {
-                  _calendarFormat = format;
-                });
-              }
-            },
-            onPageChanged: (focusedDay) {
+       appBar: AppBar(
+            leading: IconButton(
+            icon: Icon(Icons.keyboard_return),
+            onPressed: () => Navigator.pushReplacementNamed(context, 'vercita')
+          ),
+            title: Text("Obtener nueva cita"),
+            backgroundColor: Color.fromARGB(255, 93, 109, 236)
+          ),
+      body: TableCalendar(
+        firstDay: kFirstDay,
+        lastDay: kLastDay,
+        focusedDay: _focusedDay,
+        calendarFormat: _calendarFormat,
+        selectedDayPredicate: (day) {
+          // Use `selectedDayPredicate` to determine which day is currently selected.
+          // If this returns true, then `day` will be marked as selected.
+
+          // Using `isSameDay` is recommended to disregard
+          // the time-part of compared DateTime objects.
+          return isSameDay(_selectedDay, day);
+        },
+        onDaySelected: (selectedDay, focusedDay) {
+          if (!isSameDay(_selectedDay, selectedDay)) {
+            // Call `setState()` when updating the selected day
+            setState(() {
+              _selectedDay = selectedDay;
               _focusedDay = focusedDay;
-            },
-          ),
-          ElevatedButton(
-            child: Text('Clear selection'),
-            onPressed: () {
-              setState(() {
-                _selectedDays.clear();
-                _selectedEvents.value = [];
-              });
-            },
-          ),
-          const SizedBox(height: 8.0),
-          Expanded(
-            child: ValueListenableBuilder<List<Event>>(
-              valueListenable: _selectedEvents,
-              builder: (context, value, _) {
-                return ListView.builder(
-                  itemCount: value.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: ListTile(
-                        onTap: () => print('${value[index]}'),
-                        title: Text('${value[index]}'),
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ],
+            });
+          }
+        },
+        onFormatChanged: (format) {
+          if (_calendarFormat != format) {
+            // Call `setState()` when updating calendar format
+            setState(() {
+              _calendarFormat = format;
+            });
+          }
+        },
+        onPageChanged: (focusedDay) {
+          // No need to call `setState()` here
+          _focusedDay = focusedDay;
+        },
       ),
     );
   }
+  
 }
+
