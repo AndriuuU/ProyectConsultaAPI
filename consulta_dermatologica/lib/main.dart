@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         'login': ( _ ) => LoginScreen(),
         'register': (_) => RegisterScreen(),
         'home': (_) => HomeScreen(),
-        'obtenercita': (_) => ObtenercitaScreen(),
+        'calendariocitas': (_) => CalendarioCitasScreen(),
         'vercita': (_) => VercitaScreen(),
       },
       theme: ThemeData.light().copyWith(
