@@ -22,7 +22,7 @@ class _VercitaScreen extends State<VercitaScreen> {
   Widget _listViewBody(BuildContext context) {
     final getCitas = Provider.of<CitasService>(context);
     List<CitasModel> listCitas = getCitas.listaCitas;
-
+  
     return ListView.builder(
       controller: _homeController,
       itemCount: listCitas.length,
@@ -41,8 +41,9 @@ class _VercitaScreen extends State<VercitaScreen> {
 
                   ListTile(
                       contentPadding: EdgeInsets.fromLTRB(15, 10, 25, 20),
-                      title: Text(formatDateTime(listCitas[index].fechaCita),),
-                      subtitle: Text(listCitas[index].cliente.nombre),
+                      title: Text(formatDateTime(listCitas[index].fechaCompleta),),
+                       
+                      subtitle: Text(listCitas[index].cliente.email+" "),
                       
                       leading: Icon(Icons.send_sharp),
                       iconColor: Color.fromARGB(255, 0, 167, 200),
@@ -130,3 +131,4 @@ class _VercitaScreen extends State<VercitaScreen> {
     return 'Cita: $formattedDate a las $formattedTime.';
   }
 }
+

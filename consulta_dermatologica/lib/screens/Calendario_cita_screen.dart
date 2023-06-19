@@ -15,7 +15,7 @@ class CalendarioCitasScreen extends StatefulWidget {
 }
 
 class _TableEventsExampleState extends State<CalendarioCitasScreen> {
-  late final ValueNotifier<List<Event>> _selectedEvents;
+   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode =
       RangeSelectionMode.toggledOff; // Can be toggled on/off by longpressing a date
@@ -23,6 +23,7 @@ class _TableEventsExampleState extends State<CalendarioCitasScreen> {
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
+
 CitasService citasService = CitasService();
 
 final List<String> fechasCitas = [];
@@ -106,7 +107,7 @@ final List<String> fechasCitas = [];
     List<CitasModel> citas = citasService.listaCitas;
     fechasCitas.clear();
     for(CitasModel fecha in citas) {
-      fechasCitas.add(fecha.fechaCita);
+      fechasCitas.add(fecha.fechaCompleta);
     }
     
     final List<DateTime> parsedDates =
@@ -118,7 +119,7 @@ final List<String> fechasCitas = [];
             icon: Icon(Icons.keyboard_return),
             onPressed: () => Navigator.pushReplacementNamed(context, 'vercita')
           ),
-            title: Text("Calendaio mis citas"),
+            title: Text("Calendario mis citas"),
             backgroundColor: Color.fromARGB(255, 93, 109, 236)
           ),
       body: Column(

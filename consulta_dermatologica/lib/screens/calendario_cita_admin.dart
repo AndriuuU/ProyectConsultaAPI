@@ -1,15 +1,13 @@
-import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 import 'package:consulta_dermatologica/src/utils.dart';
-
 import '../models/models.dart';
 import '../services/services.dart';
-import 'screens.dart';
+
 
 class CalendarioCitasAdminScreen extends StatefulWidget {
   @override
@@ -109,7 +107,7 @@ final List<String> fechasCitas = [];
     List<CitasModel> citas = citasService.listaCitasAdmin;
     fechasCitas.clear();
     for(CitasModel fecha in citas) {
-      fechasCitas.add(fecha.fechaCita);
+      fechasCitas.add(fecha.fechaCompleta);
     }
     
     final List<DateTime> parsedDates =
@@ -121,7 +119,7 @@ final List<String> fechasCitas = [];
             icon: Icon(Icons.close_rounded),
             onPressed: () => SystemNavigator.pop()
           ),
-            title: Text("Calendaio ADMIN"),
+            title: Text("Calendario ADMIN"),
             backgroundColor: Color.fromARGB(255, 93, 109, 236)
           ),
       body: Column(
@@ -190,7 +188,7 @@ final List<String> fechasCitas = [];
     String? clien;
     String? servi;
     for(CitasModel c in citas) {
-      if(dateString==c.fechaCita){
+      if(dateString==c.fechaCompleta){
         ClienteModel cliente= c.cliente;
         ServicioModel? servicio=c.servicio;
         clien=cliente.email;

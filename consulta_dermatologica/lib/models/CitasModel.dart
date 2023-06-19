@@ -7,17 +7,21 @@ class CitasModel {
     int id;
     String fechaCita;
     ClienteModel cliente;
-    ServicioModel? servicio;
+    dynamic historial;
+    ServicioModel servicio;
     bool activa;
+    String fechaCompleta;
 
     CitasModel({
         required this.id,
         required this.fechaCita,
         required this.cliente,
-        this.servicio,
+        this.historial,
+        required this.servicio,
         required this.activa,
+        required this.fechaCompleta,
     });
-    List<CitasModel> citasList = [];
+
     factory CitasModel.fromRawJson(String str) => CitasModel.fromJson(json.decode(str));
 
     String toRawJson() => json.encode(toJson());
@@ -26,15 +30,19 @@ class CitasModel {
         id: json["id"],
         fechaCita: json["fechaCita"],
         cliente: ClienteModel.fromJson(json["cliente"]),
-        servicio: json["servicio"] == null ? null : ServicioModel.fromJson(json["servicio"]),
+        historial: json["historial"],
+        servicio: ServicioModel.fromJson(json["servicio"]),
         activa: json["activa"],
+        fechaCompleta: json["fechaCompleta"],
     );
 
     Map<String, dynamic> toJson() => {
         "id": id,
         "fechaCita": fechaCita,
         "cliente": cliente.toJson(),
-        "servicio": servicio?.toJson(),
+        "historial": historial,
+        "servicio": servicio.toJson(),
         "activa": activa,
+        "fechaCompleta": fechaCompleta,
     };
 }
