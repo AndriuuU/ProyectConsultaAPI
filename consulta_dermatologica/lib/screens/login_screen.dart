@@ -1,3 +1,5 @@
+import 'package:consulta_dermatologica/main.dart';
+import 'package:consulta_dermatologica/screens/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:consulta_dermatologica/providers/login_form_provider.dart';
@@ -100,7 +102,12 @@ class _LoginForn extends StatelessWidget {
                         final authService =
                             Provider.of<AuthService>(context, listen: false);
 
-                        if (!loginForm.isValidForm()) return;
+                        if (!loginForm.isValidForm()) {
+                          return;
+                          
+                        } else {
+                          
+                        }
 
                         
 
@@ -112,7 +119,8 @@ class _LoginForn extends StatelessWidget {
                           if (usuario.role == "ROLE_USER") {
                            
 
-                           Navigator.pushReplacementNamed(context, 'vercita');
+                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PaginaPrincipal()));
+
                             /*
                             final citasService =
                             Provider.of<CitasService>(context, listen: false);
@@ -121,10 +129,16 @@ class _LoginForn extends StatelessWidget {
 
                           } else if (usuario.role == "ROLE_ADMIN") {
                             //Menu admin
-                            Navigator.pushReplacementNamed(context, 'calendarioadmin');
+                            Navigator.pushReplacementNamed(context, Routes.calendarioAdmin);
                           }
                         } else {
                           print('Error con el usuario o contraseña');
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Error con el usuario o contraseña'),
+                              duration: Duration(seconds: 2), // Duración del mensaje en pantalla
+                            ),
+                          );
                           
                         }
                       },

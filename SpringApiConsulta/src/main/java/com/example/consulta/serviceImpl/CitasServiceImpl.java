@@ -76,22 +76,23 @@ public class CitasServiceImpl implements CitasService {
 
 	@Override
 	public List<CitasModel> listAllCitass() {
-		return citasRepository.findAll().stream().map(c -> transform(c)).collect(Collectors.toList());
+	    List<CitasModel> citasList = citasRepository.findAll()
+	            .stream()
+	            .map(c -> transform(c))
+	            .sorted((cita1, cita2) -> cita1.getFechaCita().compareTo(cita2.getFechaCita()))
+	            .collect(Collectors.toList());
 
+	    return citasList;
 	}
 
 
 	@Override
 	public List<CitasModel> listCitasCliente(long idCliente) {
-		List<CitasModel> listaClitassCliente=listAllCitass();
-		List<CitasModel> clienteCita = new ArrayList<>();
-		for(CitasModel cita: listaClitassCliente) {
-			if(cita.getCliente().getId()==idCliente) {
-				clienteCita.add(cita);
-			}
-		}
-		
-		return clienteCita;
-	}
+	    List<CitasModel> listaCitasCliente = listAllCitass().stream()
+	            .filter(cita -> cita.getCliente().getId() == idCliente)
+	            .sorted((cita1, cita2) -> cita1.getFechaCita().compareTo(cita2.getFechaCita()))
+	            .collect(Collectors.toList());
 
+	    return listaCitasCliente;
+	}
 }

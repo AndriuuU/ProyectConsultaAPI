@@ -9,9 +9,9 @@ import 'package:consulta_dermatologica/models/models.dart';
 
 
 class ServicioService extends ChangeNotifier{
-  final String _baseUrl="192.168.1.137:8080";
+  final String _baseUrl="192.168.1.142:8080";
   //final String _firebaseToken='';
-  ServiciosService() {
+  ServicioService() {
     this.getListService();
   }
 

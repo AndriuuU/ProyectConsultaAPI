@@ -324,16 +324,20 @@ public class UserController {
 	@PostMapping("/register/citas")
 	public ResponseEntity<?> insertCitas(@RequestBody CitasModel citas, @RequestHeader("Authorization") String token) {
 		boolean exist = citasService.findByFechaCitas(citas.getFechaCita()) != null;
+		
+		boolean existService = servicioService.findServicioById(citas.getServicio().getId())!=null;
 
 		System.out.println(token);
 
-		if (!exist && token != null) {
+		if (!exist && token != null && existService) {
 
 			Claims claimsusername = parseToken(token);
 			String username = claimsusername.getSubject();
 			Cliente cliente = clienteService.findByEmail(username);
+			Servicio servi= servicioService.findServicioById(citas.getServicio().getId());
 			if (cliente != null) {
 				citas.setCliente(cliente);
+				citas.setServicio(servi);
 //				clienteService.updateCliente(clienteService.transform(cliente));
 
 				return ResponseEntity.status(HttpStatus.CREATED).body(citasService.addCitas(citas));

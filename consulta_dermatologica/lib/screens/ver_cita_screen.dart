@@ -6,129 +6,119 @@ import 'package:intl/intl.dart';
 
 import 'screens.dart';
 
-class VercitaScreen extends StatefulWidget {
-   VercitaScreen({Key? key}) : super(key: key);
-
-  @override
-  State<VercitaScreen> createState() => _VercitaScreen();
-}
-
-class _VercitaScreen extends State<VercitaScreen> {
-  int _selectedIndex = 0;
-  final ScrollController _homeController = ScrollController();
- 
-  // List<Articles> listCitas =[];
-
-  Widget _listViewBody(BuildContext context) {
-    final getCitas = Provider.of<CitasService>(context);
-    List<CitasModel> listCitas = getCitas.listaCitas;
-  
-    return ListView.builder(
-      controller: _homeController,
-      itemCount: listCitas.length,
-      itemBuilder: (context, index) {
-        
-        return Card(
-
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-             
-              margin: EdgeInsets.all(15),
-              
-              elevation: 10,
-
-              child: Column(
-                children: <Widget>[
-
-                  ListTile(
-                      contentPadding: EdgeInsets.fromLTRB(15, 10, 25, 20),
-                      title: Text(formatDateTime(listCitas[index].fechaCompleta),),
-                       
-                      subtitle: Text(listCitas[index].cliente.email+" "),
-                      
-                      leading: Icon(Icons.send_sharp),
-                      iconColor: Color.fromARGB(255, 0, 167, 200),
-                    
-                  ),
-                  
-                  
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-
-                    ],
-                  )
-                ],
-              ),
-            );
-      },
-    );
-  }
-
+class VercitaScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-            leading: IconButton(
-            icon: Icon(Icons.calendar_month_outlined),
-            onPressed: () => Navigator.pushReplacementNamed(context, 'vercita')
-          ),
-            title: Text("Mis citas"),
-            backgroundColor: Color.fromARGB(255, 93, 109, 236)
-          ),
-      body: _listViewBody(context),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.edit_calendar),
-            label: 'Mis citas',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today_outlined),
-            label: 'Mostrar calendario',
-            //onPressed: () => Navigator.pushReplacementNamed(context, 'vercita')
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Nueva cita',
-            //onPressed: () => Navigator.pushReplacementNamed(context, 'vercita')
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: const Color.fromARGB(255, 111, 0, 255),
-        onTap: (int index) {
-          switch (index) {
-            case 0:
-              // only scroll to top when current index is selected.
-              if (_selectedIndex == index) {
-                _homeController.animateTo(
-                  0.0,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeOut,
-                );
-              }
-              break;
-            case 1:
-              Navigator.pushReplacementNamed(context, 'calendariocitas');
-              break;
-            case 2:
-              Navigator.pushReplacementNamed(context, 'obtenercita');
-              break;
+        leading: IconButton(
+          icon: Icon(Icons.refresh),
+          onPressed: () {
+            Provider.of<CitasService>(context, listen: false).getListCitas(); // Actualizar citas al hacer clic en el icono del calendario
+          },
+        ),
+        title: Text("Mis citas"),
+        backgroundColor: Colors.deepPurple,
+      ),
+      body: Consumer<CitasService>(
+      builder: (context, citasService, child) {
+          if (citasService.isLoading) {
+            return Center(
+              child: CircularProgressIndicator(), // Indicador de carga mientras se cargan las citas
+            );
+          } else if (citasService.hasError) {
+            return Center(
+              child: Text('Error al cargar las citas'), // Mostrar un mensaje de error si hay algún problema al cargar las citas
+            );
+          } else if (citasService.listaCitas.isEmpty) {
+            return Center(
+              child: Text('No hay citas disponibles'), // Mostrar un mensaje si no hay citas disponibles
+            );
+          } else {
+            return _ListViewBody(citasService.listaCitas); // Mostrar la lista de citas si se han cargado correctamente
           }
-          setState(
-            () {
-              _selectedIndex = index;
-            },
-          );
         },
       ),
+      // Resto del código como lo tienes...
     );
   }
-   String formatDateTime(String dateString) {
-    DateTime dateTime = DateTime.parse(dateString);
-    String formattedDate = DateFormat("dd/MM/yyyy").format(dateTime);
-    String formattedTime = DateFormat("HH:mm").format(dateTime);
 
-    return 'Cita: $formattedDate a las $formattedTime.';
+ Widget _ListViewBody(List<CitasModel> listCitas) {
+  final ScrollController _homeController = ScrollController();
+
+  return ListView.builder(
+    controller: _homeController,
+    itemCount: listCitas.length,
+    itemBuilder: (context, index) {
+      return Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        margin: EdgeInsets.all(15),
+        elevation: 10,
+        child: Column(
+          children: <Widget>[
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(15, 10, 25, 20),
+              title: Text(formatDateTime(listCitas[index].fechaCompleta)),
+              subtitle: Text(listCitas[index].cliente.email + " "),
+              leading: Icon(Icons.send_sharp),
+              iconColor: Color.fromARGB(255, 0, 167, 200),
+              trailing: IconButton(
+
+                icon: Icon(Icons.delete),
+                color: Colors.red,
+                 onPressed: () {
+                  // Mostrar cuadro de diálogo de confirmación
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Confirmar eliminación'),
+                        content: Text('¿Desea cancelar la cita?'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(); // Cerrar el cuadro de diálogo
+                            },
+                            child: Text('Cancelar'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              // Lógica para eliminar la cita
+                              Provider.of<CitasService>(context, listen: false).eliminarCita(listCitas[index].id);
+                              
+                              Navigator.of(context).pop();
+                              Provider.of<CitasService>(context, listen: false).getListCitas();
+                               // Cerrar el cuadro de diálogo
+                            },
+                            child: Text('Aceptar'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[],
+            )
+          ],
+        ),
+      );
+    },
+  );
+}
+  String formatDateTime(String dateString) {
+    try {
+      DateTime dateTime = DateTime.parse(dateString);
+      String formattedDate = DateFormat("dd/MM/yyyy").format(dateTime);
+      String formattedTime = DateFormat("HH:mm").format(dateTime);
+      return 'Cita: $formattedDate a las $formattedTime.';
+    } catch (e) {
+      // Manejar el error de formato aquí
+      print('Error al parsear la fecha: $e');
+      return 'Formato de fecha inválido.';
+    }
   }
 }
-

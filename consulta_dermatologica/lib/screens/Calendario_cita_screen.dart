@@ -117,10 +117,11 @@ final List<String> fechasCitas = [];
       appBar: AppBar(
             leading: IconButton(
             icon: Icon(Icons.keyboard_return),
-            onPressed: () => Navigator.pushReplacementNamed(context, 'vercita')
+            onPressed: () =>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PaginaPrincipal()))
+
           ),
             title: Text("Calendario mis citas"),
-            backgroundColor: Color.fromARGB(255, 93, 109, 236)
+            backgroundColor: Colors.deepPurple
           ),
       body: Column(
         children: [

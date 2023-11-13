@@ -120,7 +120,7 @@ final List<String> fechasCitas = [];
             onPressed: () => SystemNavigator.pop()
           ),
             title: Text("Calendario ADMIN"),
-            backgroundColor: Color.fromARGB(255, 93, 109, 236)
+            backgroundColor: Colors.deepPurple
           ),
       body: Column(
         children: [

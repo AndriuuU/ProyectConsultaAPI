@@ -6,7 +6,7 @@ class ServicioModel {
     int id;
     String nombre;
     double precio;
-    TratamientoModel tratamiento;
+    TratamientoModel? tratamiento;
 
     ServicioModel({
         required this.id,
@@ -15,18 +15,20 @@ class ServicioModel {
         required this.tratamiento,
     });
 
-    factory ServicioModel.fromJson(Map<String, dynamic> json) => ServicioModel(
+    factory ServicioModel.fromJson(Map<String, dynamic> json) {
+      return ServicioModel(
         id: json["id"],
         nombre: json["nombre"],
         precio: json["precio"],
-        tratamiento: TratamientoModel.fromJson(json["tratamiento"]),
-       
-    );
+        tratamiento: json["tratamiento"] != null
+            ? TratamientoModel.fromJson(json["tratamiento"])
+            : TratamientoModel(id: 1,cadaCuanto: "3 semanas",nombre: "Prueba",precio: 123),
+      );
+    }
 
     Map<String, dynamic> toJson() => {
         "id": id,
         "nombre": nombre,
         "precio": precio,
-        "tratamiento": tratamiento.toJson(),
     };
 }
