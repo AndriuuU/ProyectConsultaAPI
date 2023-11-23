@@ -1,5 +1,3 @@
-import 'package:consulta_dermatologica/main.dart';
-import 'package:consulta_dermatologica/screens/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:consulta_dermatologica/providers/login_form_provider.dart';
@@ -7,7 +5,7 @@ import 'package:consulta_dermatologica/services/services.dart';
 import 'package:consulta_dermatologica/widgets/widgets.dart';
 import '../models/models.dart';
 import '../ui/input_decorations.dart';
-import 'screens.dart';
+
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -116,6 +114,16 @@ class _LoginForn extends StatelessWidget {
 
                        
                         if (usuario != null) {
+                          if (usuario.enable == false) {
+                            print('Error Usuario desactivado');
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('El usuario esta DESACTIVADO'),
+                                duration: Duration(seconds: 2), // Duración del mensaje en pantalla
+                              ),
+                            );
+                          }else 
                           if (usuario.role == "ROLE_USER") {
                            
 
@@ -129,8 +137,8 @@ class _LoginForn extends StatelessWidget {
 
                           } else if (usuario.role == "ROLE_ADMIN") {
                             //Menu admin
-                            Navigator.pushReplacementNamed(context, Routes.calendarioAdmin);
-                          }
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PaginaAdmin()));
+                          } 
                         } else {
                           print('Error con el usuario o contraseña');
                           ScaffoldMessenger.of(context).showSnackBar(

@@ -230,6 +230,19 @@ public class UserController {
 		} else
 			return ResponseEntity.noContent().build();
 	}
+	// Obtener un cliente token
+	@GetMapping("/get/cliente")
+	public ResponseEntity<?> getClienteToken(@RequestHeader("Authorization") String token) {
+		
+		if (token != null) {
+			Claims claimsusername = parseToken(token);
+			String username = claimsusername.getSubject();
+			Cliente cliente = clienteService.findByEmail(username);
+			
+			return ResponseEntity.ok(cliente);
+		} else
+			return ResponseEntity.noContent().build();
+	}
 
 	// Eliminar cliente
 	@DeleteMapping("/delete/cliente/{id}")
@@ -242,7 +255,24 @@ public class UserController {
 			return ResponseEntity.noContent().build();
 
 	}
-
+	//update cliente
+	@PostMapping("/update/cliente")
+	public ResponseEntity<?> updateCliente(@RequestBody Cliente cliente,@RequestHeader("Authorization") String token) {
+		if (token != null) {
+			Claims claimsusername = parseToken(token);
+			String username = claimsusername.getSubject();
+			User user=userService.findUsuario(username);
+//			Cliente clienteNew = clienteService.findByEmail(username);
+//			userService.updateUser(user);
+//			if(clienteNew==cliente) {
+				return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.updateCliente(clienteService.transform(cliente)));
+//			}else
+//				return ResponseEntity.internalServerError().body("No es el mismo usuario");
+		} else {
+			return ResponseEntity.internalServerError().body("El usuario no existe");
+		
+		}
+	}
 	// Servicios
 
 	// Obtener todos los servicios

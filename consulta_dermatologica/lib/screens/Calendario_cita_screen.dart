@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:consulta_dermatologica/screens/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -15,19 +16,18 @@ class CalendarioCitasScreen extends StatefulWidget {
 }
 
 class _TableEventsExampleState extends State<CalendarioCitasScreen> {
-   late final ValueNotifier<List<Event>> _selectedEvents;
+  late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
-  RangeSelectionMode _rangeSelectionMode =
-      RangeSelectionMode.toggledOff; // Can be toggled on/off by longpressing a date
+  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
+      .toggledOff; // Can be toggled on/off by longpressing a date
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
-CitasService citasService = CitasService();
+  CitasService citasService = CitasService();
 
-final List<String> fechasCitas = [];
-
+  final List<String> fechasCitas = [];
 
   @override
   void initState() {
@@ -43,16 +43,19 @@ final List<String> fechasCitas = [];
     super.dispose();
   }
 
- List<Event> _getEventsForDay(DateTime day) {
-  final formattedDay = DateFormat('yyyy-MM-dd').format(day); // Formato deseado de la fecha
+  List<Event> _getEventsForDay(DateTime day) {
+    final formattedDay =
+        DateFormat('yyyy-MM-dd').format(day); // Formato deseado de la fecha
 
-  final eventsForDay = fechasCitas
-      .where((fecha) => DateFormat('yyyy-MM-dd').format(parseDateTime(fecha)) == formattedDay)
-      .map((fecha) => Event(fecha))
-      .toList();
+    final eventsForDay = fechasCitas
+        .where((fecha) =>
+            DateFormat('yyyy-MM-dd').format(parseDateTime(fecha)) ==
+            formattedDay)
+        .map((fecha) => Event(fecha))
+        .toList();
 
-  return eventsForDay;
-}
+    return eventsForDay;
+  }
 
   List<Event> _getEventsForRange(DateTime start, DateTime end) {
     final days = daysInRange(start, end);
@@ -101,88 +104,107 @@ final List<String> fechasCitas = [];
     }
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
-    
     List<CitasModel> citas = citasService.listaCitas;
     fechasCitas.clear();
-    for(CitasModel fecha in citas) {
+    for (CitasModel fecha in citas) {
       fechasCitas.add(fecha.fechaCompleta);
     }
-    
+
     final List<DateTime> parsedDates =
         fechasCitas.map((dateString) => parseDateTime(dateString)).toList();
 
-   return Scaffold(
-      appBar: AppBar(
+    return Scaffold(
+        appBar: AppBar(
+            actions: [
+              IconButton(
+                icon: Icon(Icons.person_2),
+                onPressed: () {
+                  Navigator.pushNamed(context, Routes.user);
+                },
+              ),
+            ],
             leading: IconButton(
-            icon: Icon(Icons.keyboard_return),
-            onPressed: () =>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PaginaPrincipal()))
-
-          ),
+                icon: Icon(Icons.keyboard_return),
+                onPressed: () => Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PaginaPrincipal()))),
             title: Text("Calendario mis citas"),
-            backgroundColor: Colors.deepPurple
-          ),
-      body: Column(
-        children: [
-          TableCalendar<Event>(
-            firstDay: kFirstDay,
-            lastDay: kLastDay,
-            focusedDay: _focusedDay,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            rangeStartDay: _rangeStart,
-            rangeEndDay: _rangeEnd,
-            calendarFormat: _calendarFormat,
-            rangeSelectionMode: _rangeSelectionMode,
-            eventLoader: _getEventsForDay,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            calendarStyle: CalendarStyle(
-              // Use `CalendarStyle` to customize the UI
-              outsideDaysVisible: false,
+            backgroundColor: Colors.deepPurple),
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromRGBO(161, 193, 238, 0.789),
+                Color.fromARGB(255, 200, 172, 230),
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
-            onDaySelected: _onDaySelected,
-            onRangeSelected: _onRangeSelected,
-            onFormatChanged: (format) {
-              if (_calendarFormat != format) {
-                setState(() {
-                  _calendarFormat = format;
-                });
-              }
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
           ),
-          const SizedBox(height: 8.0),
-          Expanded(
-            child: ValueListenableBuilder<List<Event>>(
-              valueListenable: _selectedEvents,
-              builder: (context, value, _) {
-                return ListView.builder(
-                  itemCount: value.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: ListTile(
-                        onTap: () => print('${value[index]}'),
-                        title: Text(formatDateTime('${value[index]}')),
-                      ),
+          child: Column(
+            children: [
+              TableCalendar<Event>(
+                firstDay: kFirstDay,
+                lastDay: kLastDay,
+                focusedDay: _focusedDay,
+                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                rangeStartDay: _rangeStart,
+                rangeEndDay: _rangeEnd,
+                calendarFormat: _calendarFormat,
+                rangeSelectionMode: _rangeSelectionMode,
+                eventLoader: _getEventsForDay,
+                startingDayOfWeek: StartingDayOfWeek.monday,
+                calendarStyle: CalendarStyle(
+                  // Use `CalendarStyle` to customize the UI
+                  outsideDaysVisible: false,
+                ),
+                onDaySelected: _onDaySelected,
+                onRangeSelected: _onRangeSelected,
+                onFormatChanged: (format) {
+                  if (_calendarFormat != format) {
+                    setState(() {
+                      _calendarFormat = format;
+                    });
+                  }
+                },
+                onPageChanged: (focusedDay) {
+                  _focusedDay = focusedDay;
+                },
+              ),
+              const SizedBox(height: 8.0),
+              Expanded(
+                child: ValueListenableBuilder<List<Event>>(
+                  valueListenable: _selectedEvents,
+                  builder: (context, value, _) {
+                    return ListView.builder(
+                      itemCount: value.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 4.0,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          child: ListTile(
+                            onTap: () => Navigator.pushNamed(context, Routes.detalle),
+                            // onTap: () => print('${value[index]}'),
+                            title: Text(formatDateTime('${value[index]}')),
+                          ),
+                        );
+                      },
                     );
                   },
-                );
-              },
-            ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 
   String formatDateTime(String dateString) {

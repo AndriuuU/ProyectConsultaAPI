@@ -1,3 +1,5 @@
+export 'package:consulta_dermatologica/screens/user_screen.dart';
+
 export 'package:consulta_dermatologica/main.dart';
 
 export 'package:consulta_dermatologica/screens/calendario_cita_admin.dart';

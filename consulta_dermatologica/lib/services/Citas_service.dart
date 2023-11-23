@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:consulta_dermatologica/models/models.dart';
+import 'package:intl/intl.dart';
 
 import 'auth_service.dart';
 
@@ -151,42 +152,74 @@ class CogerCitasService extends ChangeNotifier{
   final String _baseUrl="192.168.1.142:8080";
   final storage = FlutterSecureStorage();
   //final String _firebaseToken='';
-  CogerCitasService() {
+
   
 
-  Future<String?> cogerCita(String fechaCita,String fechaCompleta,int servicio) async {
-    
+  Future<String?> cogerCita(DateTime? selectedDay, String? selectedHora, int? servicioId,String? nombreServicio) async {
+    if (selectedDay == null || selectedHora == null || servicioId == null) {
+      // Manejar el caso en el que los parámetros son nulos
+      return null;
+    }
+
+    // Formatear la fecha
+    String fechaFormateada = DateFormat('yyyy-MM-ddT').format(selectedDay);
+
+    // Formatear la hora
+    DateTime hora = DateFormat('hh:mm a').parse(selectedHora);
+    String horaFormateada = DateFormat('HH:mm:ss.SSS').format(hora);
+
+    // Combinar la fecha y la hora
+    String fechacom = '$fechaFormateada$horaFormateada'+"Z";
+DateTime fecha = DateTime.parse(fechacom);
+// Formatear la fecha y la hora según tus especificaciones
+  String horaFormateadanew = DateFormat('hh:mm a').format(fecha);
+  String diaSemana = DateFormat('EEEE', 'es').format(fecha);
+  String dia = DateFormat('d').format(fecha);
+  String mes = DateFormat('MMMM', 'es').format(fecha);
+  String anio = DateFormat('yyyy').format(fecha);
+
+  // Combinar la información formateada
+  String resultado = '$horaFormateadanew&$diaSemana&$dia&$mes&$anio&'+nombreServicio.toString();
+
+  print(resultado);
+    print(resultado);
+
     final Map<String, dynamic> citaData = {
-      'fechaCita': fechaCita,
-      'fechaCompleta': fechaCompleta,
-       "servicio": {
-        "id":servicio
-        }
+      'fechaCita': resultado,
+      'fechaCompleta': fechacom,
+      "servicio": {
+        "id": servicioId,
+      }
     };
-    String token= await AuthService().readToken();
-    final url=Uri.http(_baseUrl,'/api/register/citas',{});
+
+    String token = await AuthService().readToken();
+    final url = Uri.http(_baseUrl, '/api/register/citas', {});
     print(url);
 
-    final resp = await http.post(url, 
-        headers: {
-          'Content-type': 'application/json',
-          'Accept': 'application/json',
-          "Authorization": token
-        },body: json.encode(citaData));
+    final resp = await http.post(
+      url,
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        "Authorization": token,
+      },
+      body: json.encode(citaData),
+    );
 
     print(resp.body);
 
     final Map<String, dynamic> decodeResp = json.decode(resp.body);
-    
-    print(decodeResp);
-    if(decodeResp!=null){
-        notifyListeners();
-      return decodeResp['message'];
-    }else{
-      
-      return null;
+
+    print(decodeResp['id']);
+    if (decodeResp['id']!=0) {
+      print("CITA OBTENIDA");
+      notifyListeners();
+      return diaSemana+" "+dia+" "+mes;
+    } else {
+      return "ERROR";
     }
-  notifyListeners();
   }
-  }
+  
+
+  
 }

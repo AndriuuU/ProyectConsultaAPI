@@ -65,21 +65,19 @@ public class UserService implements UserDetailsService {
 	public int activar(String username) {
 		int a = 0;
 		com.example.consulta.entity.User u = userRepository.findByUsername(username);
-		com.example.consulta.entity.User user = new com.example.consulta.entity.User();
-		user.setPassword(passwordEncoder().encode(u.getPassword()));
-		user.setUsername(u.getUsername());
-		user.setId(u.getId());
+
+		u.setId(u.getId());
 
 		if (u.isEnable() == false) {
-			user.setEnable(true);
+			u.setEnable(true);
 			a = 1;
 		} else {
-			user.setEnable(false);
+			u.setEnable(false);
 			a = 0;
 		}
-		user.setRole(u.getRole());
+		u.setRole(u.getRole());
 
-		userRepository.save(user);
+		userRepository.save(u);
 		return a;
 	}
 

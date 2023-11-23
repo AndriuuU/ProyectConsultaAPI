@@ -104,7 +104,7 @@ class _RegisterForm extends StatelessWidget {
               decoration: InputDecorations.authInputDecoration(
                 hintText: 'C/...',
                 labelText: 'Direccion',
-                prefixIcon: Icons.add_task_outlined
+                prefixIcon: Icons.add_home_outlined
               ),
               onChanged: (value) => loginForm.direccion=value,
               validator: (value) {
@@ -118,7 +118,7 @@ class _RegisterForm extends StatelessWidget {
               decoration: InputDecorations.authInputDecoration(
                 hintText: '621314213',
                 labelText: 'Telefono',
-                prefixIcon: Icons.add_task_outlined
+                prefixIcon: Icons.add_ic_call_outlined
               ),
               onChanged: (value) => loginForm.telefono=value,
               validator: (value) {

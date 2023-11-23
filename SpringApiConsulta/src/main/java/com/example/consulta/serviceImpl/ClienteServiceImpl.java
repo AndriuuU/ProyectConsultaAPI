@@ -84,14 +84,15 @@ public class ClienteServiceImpl implements ClienteService {
 
 	@Override
 	public Cliente updateCliente(ClienteModel cliente) {
-		cliente.setNombre(cliente.getNombre());
-		cliente.setEmail(cliente.getEmail());
-		cliente.setSeguro(cliente.isSeguro());
-		cliente.setDireccion(cliente.getDireccion());
-		cliente.setTelefono(cliente.getTelefono());
-		cliente.setPassword(userService.passwordEncoder().encode(cliente.getPassword()));
-		cliente.setUsuario(cliente.getUsuario());
-		return clienteRepository.save(transform(cliente));
+		Cliente clien=clienteRepository.findByEmail(cliente.getEmail());
+		clien.setNombre(cliente.getNombre());
+//		clien.setEmail(cliente.getEmail());
+//		clien.setSeguro(cliente.isSeguro());
+		clien.setDireccion(cliente.getDireccion());
+		clien.setTelefono(cliente.getTelefono());
+//		clien.setPassword(userService.passwordEncoder().encode(cliente.getPassword()));
+//		clien.setUsuario(cliente.getUsuario());
+		return clienteRepository.save(clien);
 	}
 
 	@Override
