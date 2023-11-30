@@ -50,4 +50,4 @@ jobs:
           app-name: 'apidermatologia'
           slot-name: 'Production'
           package: '*.jar'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_ECC34B0BD1A24EE7A94E3B92082E14A4 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2FE048B6F5DA4B36B097DB919DD2B105 }}
