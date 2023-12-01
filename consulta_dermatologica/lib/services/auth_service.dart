@@ -8,7 +8,7 @@ import 'package:consulta_dermatologica/models/models.dart';
 
 
 class AuthService extends ChangeNotifier{
-  final String _baseUrl="192.168.1.142:8080";
+  final String _baseUrl="192.168.54.64:8080";
   final storage = FlutterSecureStorage();
   //final String _firebaseToken='';
 
@@ -95,7 +95,7 @@ Future<UsuarioModel?> login(String username, String password) async {
 
 
 class ListClientes extends ChangeNotifier{
-  final String _baseUrl="192.168.1.142:8080";
+  final String _baseUrl="192.168.54.64:8080";
   //final String _firebaseToken='';
   listClientes() {
     this.getListClientes();
