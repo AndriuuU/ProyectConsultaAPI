@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 import 'auth_service.dart';
 
 class CitasService extends ChangeNotifier {
-  final String _baseUrl = "192.168.1.142:8080";
+  final String _baseUrl = "dermatoloapi.azurewebsites.net";
   final storage = FlutterSecureStorage();
   List<CitasModel> listaCitas = [];
   bool isLoading = false;
@@ -30,7 +30,7 @@ class CitasService extends ChangeNotifier {
 
     try {
       String token = await AuthService().readToken();
-      final url = Uri.http(_baseUrl, '/api/get/citas', {});
+      final url = Uri.https(_baseUrl, '/api/get/citas', {});
       print(url);
 
       final resp = await http.get(url,
@@ -72,7 +72,7 @@ class CitasService extends ChangeNotifier {
     errorMessage = '';
     try {
       String token = await AuthService().readToken();
-      final url = Uri.http(_baseUrl, '/api/delete/citas/$citaId', {});
+      final url = Uri.https(_baseUrl, '/api/delete/citas/$citaId', {});
       final response = await http.delete(
         url,
         headers: {
@@ -105,7 +105,7 @@ class CitasService extends ChangeNotifier {
 
 
 class CitasServiceAdmin extends ChangeNotifier{
-  final String _baseUrl="192.168.1.142:8080";
+  final String _baseUrl="dermatoloapi.azurewebsites.net";
 
   CitasServiceAdmin() {
     this.getListCitasAdmin();
@@ -115,7 +115,7 @@ class CitasServiceAdmin extends ChangeNotifier{
 
   getListCitasAdmin() async {
 
-    final url=Uri.http(_baseUrl,'/api/all/citas',{});
+    final url=Uri.https(_baseUrl,'/api/all/citas',{});
     print(url);
 
     final resp = await http.get(url, 
@@ -149,7 +149,7 @@ class CitasServiceAdmin extends ChangeNotifier{
 
 //Coger citas
 class CogerCitasService extends ChangeNotifier{
-  final String _baseUrl="192.168.1.142:8080";
+  final String _baseUrl="dermatoloapi.azurewebsites.net";
   final storage = FlutterSecureStorage();
   //final String _firebaseToken='';
 
@@ -193,7 +193,7 @@ DateTime fecha = DateTime.parse(fechacom);
     };
 
     String token = await AuthService().readToken();
-    final url = Uri.http(_baseUrl, '/api/register/citas', {});
+    final url = Uri.https(_baseUrl, '/api/register/citas', {});
     print(url);
 
     final resp = await http.post(

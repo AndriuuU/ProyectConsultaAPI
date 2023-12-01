@@ -10,14 +10,14 @@ import 'package:intl/intl.dart';
 import 'auth_service.dart';
 
 class UserService extends ChangeNotifier {
-  final String _baseUrl = "192.168.1.142:8080";
+  final String _baseUrl = "dermatoloapi.azurewebsites.net";
   final storage = FlutterSecureStorage();
 
 
   
   Future<ClienteModel2?> getUser() async {
      String token = await AuthService().readToken();
-     final url=Uri.http(_baseUrl,'/api/get/cliente',{});
+     final url=Uri.https(_baseUrl,'/api/get/cliente',{});
 
      final resp = await http.get(
       url,
@@ -42,7 +42,7 @@ class UserService extends ChangeNotifier {
   }
   Future<bool> updateCliente(String name,String address,String phone,String email) async {
     String token = await AuthService().readToken();
-    final url = Uri.http(_baseUrl, '/api/update/cliente');
+    final url = Uri.https(_baseUrl, '/api/update/cliente');
 
     final Map<String, dynamic> citaData = {
           'nombre': name,
@@ -73,7 +73,7 @@ class UserService extends ChangeNotifier {
 
   Future<bool> updateUser(String username,String password) async {
     String token = await AuthService().readToken();
-    final url = Uri.http(_baseUrl, '/api/update/userpass');
+    final url = Uri.https(_baseUrl, '/api/update/userpass');
 
     final Map<String, dynamic> userData = {
           'username': username,

@@ -8,7 +8,7 @@ import 'package:consulta_dermatologica/models/models.dart';
 
 
 class AuthService extends ChangeNotifier{
-  final String _baseUrl="192.168.54.64:8080";
+  final String _baseUrl="dermatoloapi.azurewebsites.net";
   final storage = FlutterSecureStorage();
   //final String _firebaseToken='';
 
@@ -23,7 +23,7 @@ class AuthService extends ChangeNotifier{
       'password': password,
     };
 
-    final url=Uri.http(_baseUrl,'/api/register/cliente',{});
+    final url=Uri.https(_baseUrl,'/api/register/cliente',{});
     
     print(authData);
     final resp = await http.post(url, 
@@ -54,7 +54,7 @@ Future<UsuarioModel?> login(String username, String password) async {
   };
 
   try {
-    final url = Uri.http(_baseUrl, '/api/login', {});
+    final url = Uri.https(_baseUrl, '/api/login', {});
     final resp = await http.post(url,
         headers: {
           'Content-type': 'application/json',
@@ -95,7 +95,7 @@ Future<UsuarioModel?> login(String username, String password) async {
 
 
 class ListClientes extends ChangeNotifier{
-  final String _baseUrl="192.168.54.64:8080";
+  final String _baseUrl="dermatoloapi.azurewebsites.net";
   //final String _firebaseToken='';
   listClientes() {
     this.getListClientes();
@@ -105,7 +105,7 @@ class ListClientes extends ChangeNotifier{
 
   getListClientes() async {
 
-    final url=Uri.http(_baseUrl,'/api/all/cliente',{});
+    final url=Uri.https(_baseUrl,'/api/all/cliente',{});
     print(url);
 
     final resp = await http.get(url, 

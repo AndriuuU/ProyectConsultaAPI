@@ -9,7 +9,7 @@ import 'package:consulta_dermatologica/models/models.dart';
 
 
 class ServicioService extends ChangeNotifier{
-  final String _baseUrl="192.168.1.142:8080";
+  final String _baseUrl="dermatoloapi.azurewebsites.net";
   //final String _firebaseToken='';
   ServicioService() {
     this.getListService();
@@ -19,7 +19,7 @@ class ServicioService extends ChangeNotifier{
 
   getListService() async {
 
-    final url=Uri.http(_baseUrl,'/api/all/servicios/',{});
+    final url=Uri.https(_baseUrl,'/api/all/servicios/',{});
     print(url);
 
     final resp = await http.get(url, 
