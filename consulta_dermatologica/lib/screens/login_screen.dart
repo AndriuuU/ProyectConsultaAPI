@@ -1,3 +1,4 @@
+import 'package:consulta_dermatologica/screens/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:consulta_dermatologica/providers/login_form_provider.dart';
@@ -5,7 +6,6 @@ import 'package:consulta_dermatologica/services/services.dart';
 import 'package:consulta_dermatologica/widgets/widgets.dart';
 import '../models/models.dart';
 import '../ui/input_decorations.dart';
-
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -56,14 +56,13 @@ class _LoginForn extends StatelessWidget {
           child: Column(
             children: [
               TextFormField(
-                autocorrect: false,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecorations.authInputDecoration(
-                    hintText: 'prueba@gmail.com',
-                    labelText: 'Correo electronico',
-                    prefixIcon: Icons.alternate_email_rounded),
-                onChanged: (value) => loginForm.email = value
-              ),
+                  autocorrect: false,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecorations.authInputDecoration(
+                      hintText: 'prueba@gmail.com',
+                      labelText: 'Correo electronico',
+                      prefixIcon: Icons.alternate_email_rounded),
+                  onChanged: (value) => loginForm.email = value),
               SizedBox(height: 20),
               TextFormField(
                 autocorrect: false,
@@ -102,17 +101,11 @@ class _LoginForn extends StatelessWidget {
 
                         if (!loginForm.isValidForm()) {
                           return;
-                          
-                        } else {
-                          
-                        }
-
-                        
+                        } else {}
 
                         final UsuarioModel? usuario = await authService.login(
                             loginForm.email, loginForm.password);
 
-                       
                         if (usuario != null) {
                           if (usuario.enable == false) {
                             print('Error Usuario desactivado');
@@ -120,34 +113,57 @@ class _LoginForn extends StatelessWidget {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text('El usuario esta DESACTIVADO'),
-                                duration: Duration(seconds: 2), // Duración del mensaje en pantalla
+                                duration: Duration(
+                                    seconds:
+                                        2), // Duración del mensaje en pantalla
                               ),
                             );
-                          }else 
-                          if (usuario.role == "ROLE_USER") {
-                           
-
-                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PaginaPrincipal()));
+                          } else if (usuario.role == "ROLE_USER") {
+                            // Comprobar si la contraseña comienza con los caracteres especificados
+                            final String password = loginForm.password ?? '';
+                            if (password.startsWith('ç*') ||
+                                password.startsWith('-')) {
+                              // Redirigir a otra pantalla
+                              Navigator.pushNamed(context, Routes.cambiarPass);
+                              
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content:
+                                      Text('TIENES QUE CAMBIAR LA CONTRASEÑA'),
+                                  duration: Duration(
+                                      seconds:
+                                          4), // Duración del mensaje en pantalla
+                                ),
+                              );
+                            } else
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PaginaPrincipal()));
 
                             /*
                             final citasService =
                             Provider.of<CitasService>(context, listen: false);
                             final CitasModel? misCitas = await citasService.miCita(); 
                             */
-
                           } else if (usuario.role == "ROLE_ADMIN") {
                             //Menu admin
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PaginaAdmin()));
-                          } 
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PaginaAdmin()));
+                          }
                         } else {
                           print('Error con el usuario o contraseña');
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('Error con el usuario o contraseña'),
-                              duration: Duration(seconds: 2), // Duración del mensaje en pantalla
+                              content:
+                                  Text('Error con el usuario o contraseña'),
+                              duration: Duration(
+                                  seconds:
+                                      2), // Duración del mensaje en pantalla
                             ),
                           );
-                          
                         }
                       },
               )

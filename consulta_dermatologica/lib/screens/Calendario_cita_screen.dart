@@ -192,8 +192,8 @@ class _TableEventsExampleState extends State<CalendarioCitasScreen> {
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                           child: ListTile(
-                            onTap: () => Navigator.pushNamed(context, Routes.detalle),
-                            // onTap: () => print('${value[index]}'),
+                            // onTap: () => Navigator.pushNamed(context, Routes.detalle),
+                            onTap: () => print('${value[index]}'),
                             title: Text(formatDateTime('${value[index]}')),
                           ),
                         );

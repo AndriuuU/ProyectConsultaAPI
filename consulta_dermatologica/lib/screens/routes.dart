@@ -13,6 +13,7 @@ class Routes {
   static const String calendarioAdmin = "calendarioAdmin";
   static const String user="UserProfile";
   static const String detalle="detalle";
+  static const String cambiarPass="cambiarPass";
   // static const String PaginaPrincipal="paginaPrincipal";
 
   static Map<String, WidgetBuilder> getRoutes(BuildContext context) {
@@ -27,6 +28,7 @@ class Routes {
       calendarioAdmin: (context) => CalendarioCitasAdminScreen(),
       user: (context) => UserProfileScreen(),
       detalle:(context) => DetalleCitasScreen(),
+      cambiarPass:(context) => CambiarPasswordScreen(),
     };
   }
 }

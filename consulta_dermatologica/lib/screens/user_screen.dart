@@ -73,35 +73,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 isEditable: false),
             SizedBox(height: 16),
 
-            // Campo de contraseña
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _passwordController,
-                    obscureText: !_isPasswordVisible,
-                    enabled: true,
-                    decoration: InputDecoration(
-                      labelText: "Contraseña",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(
-                    _isPasswordVisible
-                        ? Icons.visibility_off
-                        : Icons.visibility,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _isPasswordVisible = !_isPasswordVisible;
-                    });
-                  },
-                ),
-              ],
-            ),
-
             // Botón de Guardar
 
             MaterialButton(
@@ -137,26 +108,30 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   Future<void> saveChanges() async {
-    String name = _nameController.text;
-    String address = _addressController.text;
-    String phone = _phoneController.text;
-    String email = _email;
-    String password = _passwordController.text;
+    if (mounted) {
+      String name = _nameController.text;
+      String address = _addressController.text;
+      String phone = _phoneController.text;
+      String email = _email;
+      String password = _passwordController.text;
 
-    bool exito = await UserService().updateCliente(name, address, phone, email);
-    if (exito)
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Cambios guardados con éxito'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-    else
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('No se puedo guardar los cambios'),
-          duration: Duration(seconds: 2),
-        ),
-      );
+      bool exito =
+          await UserService().updateCliente(name, address, phone, email);
+      if (exito) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Cambios guardados con éxito'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('No se pudo guardar los cambios'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    }
   }
 }

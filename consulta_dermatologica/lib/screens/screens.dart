@@ -1,3 +1,5 @@
+export 'package:consulta_dermatologica/screens/cambiar_pass_screen.dart';
+
 export 'package:consulta_dermatologica/screens/user_screen.dart';
 
 export 'package:consulta_dermatologica/main.dart';
@@ -17,4 +19,3 @@ export 'package:consulta_dermatologica/screens/home_screen.dart';
 export 'package:consulta_dermatologica/screens/login_screen.dart';
 
 export 'package:consulta_dermatologica/screens/register_screen.dart';
-

@@ -70,4 +70,32 @@ class UserService extends ChangeNotifier {
     }
   }
 
+
+  Future<bool> updateUser(String username,String password) async {
+    String token = await AuthService().readToken();
+    final url = Uri.http(_baseUrl, '/api/update/userpass');
+
+    final Map<String, dynamic> userData = {
+          'username': username,
+          "password": password,
+        };
+    final resp = await http.post(
+      url,
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        "Authorization": token,
+      },
+      body: json.encode(userData),
+    );
+
+    if (resp.statusCode == 201) {
+      print('Usuario actualizado con éxito');
+      return true;
+    } else {
+      print('Error al actualizar el usuario');
+      return false;
+    }
+  }
+
 }

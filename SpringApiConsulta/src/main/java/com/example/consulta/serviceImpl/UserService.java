@@ -17,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.consulta.controller.UserController.UserNotFoundException;
+import com.example.consulta.model.UserModel;
 import com.example.consulta.repository.UserRepository;
 
 @Service("userService")
@@ -57,9 +59,18 @@ public class UserService implements UserDetailsService {
 		}
 		return userRepository.save(user);
 	}
+	public com.example.consulta.entity.User updateUserPassword(com.example.consulta.entity.User user, String username) throws UserNotFoundException {
+	    com.example.consulta.entity.User existingUser = userRepository.findByUsername(username);
+
+	    // Actualizar solo la contraseña
+	    existingUser.setPassword(passwordEncoder().encode(user.getPassword()));
+
+	    return userRepository.save(existingUser);
+	}
 	
-	public com.example.consulta.entity.User updateUser(com.example.consulta.entity.User user) {
-		return userRepository.save(user);
+	public com.example.consulta.entity.User updateUser(com.example.consulta.entity.User updatedUser) {
+
+	    return userRepository.save(updatedUser);
 	}
 
 	public int activar(String username) {

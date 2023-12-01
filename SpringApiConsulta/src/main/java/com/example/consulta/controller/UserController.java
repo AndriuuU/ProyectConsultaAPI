@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.consulta.entity.Citas;
@@ -171,7 +170,29 @@ public class UserController {
 			return ResponseEntity.noContent().build();
 
 	}
+	//Update password
+	@PostMapping("/update/userpass")
+	public ResponseEntity<?> updateUserPassword(@RequestBody com.example.consulta.entity.User  user,@RequestHeader("Authorization") String token) {
+		if (token != null) {
+	        Claims claimsusername = parseToken(token);
+	        String username = claimsusername.getSubject();
 
+	        try {
+	            User updatedUser = userService.updateUserPassword(user, username);
+	            return ResponseEntity.status(HttpStatus.CREATED).body(updatedUser);
+	        } catch (UserNotFoundException e) {
+	            return ResponseEntity.internalServerError().body("El usuario no existe");
+	        }
+	    } else {
+	        return ResponseEntity.internalServerError().body("El token no es válido");
+	    }
+	}
+	public class UserNotFoundException extends Exception {
+	    public UserNotFoundException(String message) {
+	        super(message);
+	    }
+	}
+	
 	// Modificar Usuario
 	// Actualiza una categoría si existe
 	// Buscar Otra manera
