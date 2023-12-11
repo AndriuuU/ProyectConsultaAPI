@@ -60,19 +60,27 @@ class _CambiarPasswordScreenState extends State<CambiarPasswordScreen> {
                 isPasswordVisible: false),
             SizedBox(height: 16),
 
-            // Botón de Cambiar Contraseña
-            MaterialButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              disabledColor: Colors.grey,
-              elevation: 0,
-              color: Colors.deepPurple,
-              onPressed: () {
-                // Lógica para cambiar la contraseña
-                changePassword();
-              },
-              child: Text('Cambiar Contraseña'),
-            ),
+            Container(
+                alignment: Alignment.center,
+                child: MaterialButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  disabledColor: Colors.grey,
+                  elevation: 0,
+                  color: Colors.deepPurple,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 60, vertical: 15),
+                    child: Text(
+                      'Cambiar Contraseña',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  onPressed: () {
+                    // Lógica para cambiar la contraseña
+                    changePassword();
+                  },
+                )),
           ],
         ),
       ),

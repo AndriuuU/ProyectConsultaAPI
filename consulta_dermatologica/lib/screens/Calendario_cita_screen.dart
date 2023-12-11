@@ -25,7 +25,7 @@ class _TableEventsExampleState extends State<CalendarioCitasScreen> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
-  CitasService citasService = CitasService();
+  CitasServiceAdmin citasService = CitasServiceAdmin();
 
   final List<String> fechasCitas = [];
 
@@ -106,7 +106,7 @@ class _TableEventsExampleState extends State<CalendarioCitasScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<CitasModel> citas = citasService.listaCitas;
+    List<CitasModel> citas = citasService.listaCitasAdmin;
     fechasCitas.clear();
     for (CitasModel fecha in citas) {
       fechasCitas.add(fecha.fechaCompleta);
@@ -131,7 +131,7 @@ class _TableEventsExampleState extends State<CalendarioCitasScreen> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => PaginaPrincipal()))),
-            title: Text("Calendario mis citas"),
+            title: Text("Calendario todas las citas"),
             backgroundColor: Colors.deepPurple),
         body: Container(
           decoration: BoxDecoration(
@@ -147,6 +147,7 @@ class _TableEventsExampleState extends State<CalendarioCitasScreen> {
           child: Column(
             children: [
               TableCalendar<Event>(
+                locale: 'es_ES',
                 firstDay: kFirstDay,
                 lastDay: kLastDay,
                 focusedDay: _focusedDay,
@@ -212,6 +213,6 @@ class _TableEventsExampleState extends State<CalendarioCitasScreen> {
     String formattedDate = DateFormat("dd/MM/yyyy").format(dateTime);
     String formattedTime = DateFormat("HH:mm").format(dateTime);
 
-    return 'Cita: $formattedDate a las $formattedTime.';
+    return 'Cita: $formattedTime.';
   }
 }

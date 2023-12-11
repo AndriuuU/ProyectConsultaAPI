@@ -99,13 +99,13 @@ class _LoginForn extends StatelessWidget {
                         final authService =
                             Provider.of<AuthService>(context, listen: false);
 
-                        if (!loginForm.isValidForm()) {
-                          return;
-                        } else {}
+                        if (!loginForm.isValidForm()) return;
+
+                        loginForm.isLoading = true;
 
                         final UsuarioModel? usuario = await authService.login(
                             loginForm.email, loginForm.password);
-
+                        loginForm.isLoading = false;
                         if (usuario != null) {
                           if (usuario.enable == false) {
                             print('Error Usuario desactivado');
@@ -118,6 +118,8 @@ class _LoginForn extends StatelessWidget {
                                         2), // Duración del mensaje en pantalla
                               ),
                             );
+
+                             loginForm.isLoading = true;
                           } else if (usuario.role == "ROLE_USER") {
                             // Comprobar si la contraseña comienza con los caracteres especificados
                             final String password = loginForm.password ?? '';
@@ -125,7 +127,7 @@ class _LoginForn extends StatelessWidget {
                                 password.startsWith('-')) {
                               // Redirigir a otra pantalla
                               Navigator.pushNamed(context, Routes.cambiarPass);
-                              
+
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content:

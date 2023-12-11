@@ -183,7 +183,7 @@ DateTime fecha = DateTime.parse(fechacom);
 
   print(resultado);
     print(resultado);
-
+try {
     final Map<String, dynamic> citaData = {
       'fechaCita': resultado,
       'fechaCompleta': fechacom,
@@ -211,12 +211,20 @@ DateTime fecha = DateTime.parse(fechacom);
     final Map<String, dynamic> decodeResp = json.decode(resp.body);
 
     print(decodeResp['id']);
-    if (decodeResp['id']!=0) {
+    if (decodeResp['id']==null) {
+      print("REPETIDO");
+      return "REPETIDO";
+
+    }else if (decodeResp['id']!=0) {
       print("CITA OBTENIDA");
       notifyListeners();
       return diaSemana+" "+dia+" "+mes;
     } else {
       return "ERROR";
+    }
+     } catch (e) {
+      print('Error al decodificar la respuesta del servidor: $e');
+      return null;
     }
   }
   

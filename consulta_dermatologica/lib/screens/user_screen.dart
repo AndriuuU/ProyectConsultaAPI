@@ -1,3 +1,5 @@
+import 'package:consulta_dermatologica/main.dart';
+import 'package:consulta_dermatologica/screens/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:consulta_dermatologica/services/user_service.dart';
 
@@ -26,27 +28,35 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     // Llama al método para obtener los datos del usuario al inicio
     getUserData();
   }
+  
 
-  void getUserData() async {
-    // Llama al servicio para obtener los datos del usuario
-    final ClienteModel2? cliente = await UserService().getUser();
+ void getUserData() async {
+  
+  final ClienteModel2? cliente = await UserService().getUser();
 
-    // Verifica si se obtuvo el cliente y actualiza los controladores
-    if (cliente != null) {
-      setState(() {
-        _nameController.text = cliente.nombre;
-        _addressController.text = cliente.direccion;
-        _phoneController.text = cliente.telefono;
-        _email = cliente.email;
-        // No actualizamos el controlador de contraseña para que no se pueda modificar
-      });
-    }
+  if (cliente != null && mounted) {
+    setState(() {
+      _nameController.text = cliente.nombre;
+      _addressController.text = cliente.direccion;
+      _phoneController.text = cliente.telefono;
+      _email = cliente.email;
+      
+    });
   }
+}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(Icons.exit_to_app_rounded),
+            onPressed: () {
+              Navigator.pushNamed(context, Routes.login);
+            },
+          ),
+        ],
         title: Text('Perfil de Usuario'),
         backgroundColor: Colors.deepPurple,
       ),
@@ -75,17 +85,49 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
             // Botón de Guardar
 
-            MaterialButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              disabledColor: Colors.grey,
-              elevation: 0,
-              color: Colors.deepPurple,
-              onPressed: () {
-                // Lógica para guardar los cambios
-                saveChanges();
-              },
-              child: Text('Guardar'),
+           Container(
+                  alignment: Alignment.center,
+                  child: MaterialButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    disabledColor: Colors.grey,
+                    elevation: 0,
+                    color: Colors.deepPurple,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 60, vertical: 15),
+                      child: Text(
+                        'Guardar',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    onPressed: () {
+                      // Lógica para guardar los cambios
+                      saveChanges();
+                    },
+                  )
+             
+            ), Container(
+                  alignment: Alignment.center,
+                  child: MaterialButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    disabledColor: Colors.grey,
+                    elevation: 0,
+                    color: Colors.deepPurple,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 60, vertical: 15),
+                      child: Text(
+                        'Cambiar contraseña',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    onPressed: () {
+                       Navigator.pushNamed(context, Routes.cambiarPass);
+                    },
+                  )
+             
             ),
           ],
         ),
@@ -108,21 +150,28 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   Future<void> saveChanges() async {
-    if (mounted) {
-      String name = _nameController.text;
-      String address = _addressController.text;
-      String phone = _phoneController.text;
-      String email = _email;
-      String password = _passwordController.text;
+  if (mounted) {
+    String name = _nameController.text;
+    String address = _addressController.text;
+    String phone = _phoneController.text;
+    String email = _email;
+    String password = _passwordController.text;
 
-      bool exito =
-          await UserService().updateCliente(name, address, phone, email);
+    // Verificar si todos los campos están llenos
+    if (_areAllFieldsFilled()) {
+      bool exito = await UserService().updateCliente(name, address, phone, email);
       if (exito) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Cambios guardados con éxito'),
             duration: Duration(seconds: 2),
           ),
+        );
+
+        // Navegar a la página principal después de guardar los cambios
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => PaginaPrincipal()),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -132,6 +181,20 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           ),
         );
       }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Por favor, completa todos los campos'),
+          duration: Duration(seconds: 2),
+        ),
+      );
     }
+  }
+}
+
+   bool _areAllFieldsFilled() {
+    return _nameController.text.isNotEmpty &&
+        _addressController.text.isNotEmpty &&
+        _phoneController.text.isNotEmpty;
   }
 }
